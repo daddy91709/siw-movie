@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWMovie -Film Trovati</title>
+    <link rel="stylesheet" th:href="@{/stile1.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{index.html :: header}"> </div>
+
+    <main>
+
+        <div class="title-div" th:if="${movies.isEmpty()}">
+            <h1 class="title">Non ci sono film di questo anno</h1>
+        </div>
+        <div class="title-div" th:unless="${movies.isEmpty()}">
+            <h1 class="title">Film Trovati</h1>
+        </div>
+
+        <div class="card-slideshow">
+            <div class="card-container" th:each="movie:${movies}">
+                <div class="card">
+                    <div class="card-img">
+                        <img
+                            th:src="${movie.urlImage}">
+                    </div>
+                    <div class="card-info">
+                        <a th:href="@{'/movies' + '/' + ${movie.id} }" class="link">
+							<h3 th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</h3>
+						</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>

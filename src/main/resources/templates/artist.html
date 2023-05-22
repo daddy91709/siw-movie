@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWMovie -Artista</title>
+    <link rel="stylesheet" th:href="@{/stile1.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{index.html :: header}"> </div>
+
+    <main>
+        <div class="box">
+            <h2 class="title" th:text="${artist.name} + ' ' + ${artist.surname}">Nome</h2>
+            <div class="box-content">
+                <div class="column">
+                    <div class="film-img">
+                        <img th:src="${artist.urlImage}">
+                    </div>
+                    <h3 th:text=" 'Età: ' + ${artist.age}">età</h3> 
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

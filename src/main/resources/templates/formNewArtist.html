@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwMovie -Aggiungi un Artista</title>
+    <link rel="stylesheet" th:href="@{/stile1.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{index.html :: header}"> </div>
+
+    <main>
+        <form method="POST" th:action="@{/addartist}" th:object="${artist}" class="box">
+            <h2 class="title">Inserisci un Artista</h2>
+            <div class="input-content">
+                <input type="text" placeholder="Nome dell'Artista" class="form-input" th:field="${artist.name}">
+                <input type="text" placeholder="Cognome dell'Artista" class="form-input" th:field="${artist.surname}">
+                <input type="text" placeholder="Età dell'Artista" class="form-input" th:field="${artist.age}">
+                <input type="url" placeholder="URL dell'immagine" class="form-input" th:field="${artist.urlImage}">
+            </div>
+            <br>
+            <div class="form-bottom">
+                <input type="submit" class="submit" th:href="@{/index}">
+                <h3 style="color:red" th:text="${messaggioErrore}">Errore</h3>
+            </div>
+        </form>
+    </main>
+
+</body>
+
+</html>

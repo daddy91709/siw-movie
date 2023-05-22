@@ -1,0 +1,63 @@
+body {
+    background: linear-gradient(90deg, rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 1) 99%);
+}
+
+a.home{
+    text-decoration: none;
+}
+
+h2 {
+    color: blue;
+    font-family: arial;
+    text-align: center;
+}
+
+h1 {
+    color: lightblue;
+    font-family: arial;
+    text-align: center;
+    margin: 10%;
+    position: relative;
+    text-shadow: 1ch;
+}
+
+div.box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    width: 50%;
+    height: 50%;
+    top: auto;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+div.center{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    transform: translate(-50%, -30%);
+}
+h2.errormsg{
+    color: red;
+}
+.filmtitle{
+    color:white;
+}
+ul {
+    color: white;
+}
+li{
+    font-size: large;
+}
+a{
+    color: white;     
+}
+input.submit{
+    border-radius: 2%;
+}

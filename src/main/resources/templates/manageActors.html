@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWMovie -Film</title>
+    <link rel="stylesheet" th:href="@{/stile1.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{index.html :: header}"> </div>
+
+    <main>
+		<div th:if="!${artists.isEmpty()} or !${movie.artists.isEmpty()}" style="display: flex; justify-content: space-evenly; margin-top:2%;">
+			
+		<div class="column"> 
+			<h1 th:text="'Attori Selezionati per '+${movie.title}">Attori Selezionati Film</h1>
+			<div class="artist-box" th:each="artist: ${movie.artists}">
+				<a class="link" th:href="@{'/removeActor'+ '/' + ${artist.id} + '/' + ${movie.id}}">
+				   <h3 th:text="${artist.name} + ' ' + ${artist.surname}" >Nome Cognome</h3>
+                </a>
+                <img th:src="${artist.urlImage}">
+			</div>
+		</div>
+		
+		<div class="column">
+			<h1 th:text="'Attori Disponibili per '+${movie.title}">Attori Disponibili Film</h1>
+			<div class="artist-box" th:each="artist: ${artists}">
+				<a class="link" th:href="@{'/addActor'+ '/' + ${artist.id} + '/' + ${movie.id}}">
+				   <h3 th:text="${artist.name} + ' ' + ${artist.surname}" >Nome Cognome</h3>
+                </a>
+				<img th:src="${artist.urlImage}">
+			</div>
+		</div>
+		
+		</div>
+
+		<div th:if="${artists.isEmpty()} and ${movie.artists.isEmpty()}" style="display: flex; justify-content: center; margin-top:2%;">
+			<h1>Non ci sono ancora Attori nel sistema, Aggiungili!</h1>
+		</div>
+		
+		<div style="display: flex; justify-content: center; margin-top: 5%;">
+			<a th:href="@{'/manageMovies' + '/' + ${movie.id}}" >
+		       <button class="submit">Conferma</button>
+		    </a>
+		</div>
+	</main>
+
+</body>
+</html>
