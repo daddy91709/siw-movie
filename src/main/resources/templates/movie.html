@@ -6,14 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie -Film</title>
-    <link rel="stylesheet" th:href="@{/stile1.css}">
+    <link rel="stylesheet" th:href="@{/stile.css}">
 </head>
 
 <body class="background">
 
     <div th:insert="~{index.html :: header}"> </div>
 
-    <main>
+    <main class="column margin-top">
         <div class="box">
             <h2 class="title" th:text="${movie.title} + ' (' + ${movie.year} + ')'">Titolo</h2>
             <div class="box-content">
@@ -33,6 +33,18 @@
                         <h3 th:text="'Regista: '+ ${movie.director.name} + ' ' + ${movie.director.surname}">Regista</h3> 
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <div class="margin-top">
+            <h2>Recensioni</h2>
+            <div>
+                <a th:href="'/user/reviewFilm/' + ${movie.id}" class="submit">Aggiungi una Recensione</a>
+            </div>
+
+            <div th:each="review: ${reviews}">
+                <h2 th:text="'Titolo: ' + ${review.title} + 'di ' ${review.user.name} + ' ' + ${review.user.surname}"></h2>
+                <progress max="5" th:value="${review.valutation}"></progress>
             </div>
         </div>
     </main>

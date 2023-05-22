@@ -1,6 +1,5 @@
 package it.uniroma3.siw.model;
 
-import java.time.Year;
 import java.util.List;
 import java.util.Objects;
 import jakarta.validation.constraints.*;
@@ -25,10 +24,18 @@ public class Movie {
     
     @ManyToOne
     private Artist director;
+
+	@OneToMany(mappedBy="movie")
+	private List<Review> reviews;
     
-    @OneToMany
-    private List<News> newsList;
-    
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(title, year);
@@ -86,13 +93,4 @@ public class Movie {
 	public void setDirector(Artist director) {
 		this.director = director;
 	}
-
-	public List<News> getNewsList() {
-		return newsList;
-	}
-
-	public void setNewsList(List<News> newsList) {
-		this.newsList = newsList;
-	}
-
 }

@@ -6,14 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiwMovie -Aggiungi un Artista</title>
-    <link rel="stylesheet" th:href="@{/stile1.css}">
+    <link rel="stylesheet" th:href="@{/stile.css}">
 </head>
 
 <body class="background">
 
     <div th:insert="~{index.html :: header}"> </div>
 
-    <main>
+    <main class="evenly-spacer margin-top">
         <form method="POST" th:action="@{/addartist}" th:object="${artist}" class="box">
             <h2 class="title">Inserisci un Artista</h2>
             <div class="input-content">

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie -Film</title>
-    <link rel="stylesheet" th:href="@{/stile1.css}">
+    <link rel="stylesheet" th:href="@{/stile.css}">
 </head>
 
 <body class="background">
@@ -14,7 +14,7 @@
     <div th:insert="~{index.html :: header}"> </div>
 
     <main>
-		<div th:if="!${artists.isEmpty()} or !${movie.artists.isEmpty()}" style="display: flex; justify-content: space-evenly; margin-top:2%;">
+		<div th:if="!${artists.isEmpty()} or !${movie.artists.isEmpty()}" class="evenly-spacer margin-top">
 			
 		<div class="column"> 
 			<h1 th:text="'Attori Selezionati per '+${movie.title}">Attori Selezionati Film</h1>
@@ -44,7 +44,7 @@
 		
 		<div style="display: flex; justify-content: center; margin-top: 5%;">
 			<a th:href="@{'/manageMovies' + '/' + ${movie.id}}" >
-		       <button class="submit">Conferma</button>
+		       <button class="submit" style="background-color: #1f2a8a;">Conferma</button>
 		    </a>
 		</div>
 	</main>

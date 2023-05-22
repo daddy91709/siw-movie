@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie</title>
-    <link rel="stylesheet" th:href="@{/stile1.css}">
+    <link rel="stylesheet" th:href="@{/stile.css}">
 </head>
 
 <body class="background">
@@ -14,44 +14,56 @@
     <header th:fragment="header">
         <a th:href="@{/index}" class="title">SIW Movie</a>
         <nav>
-            <ul>
+            <div class="dropdown">
+                <p>Film</p>
+                <div class="dropdown-content">
+                    <a th:href="@{/formNewMovie}">Nuovo Film</a>
+                    <a th:href="@{/movies}">Tutti i Film</a>
+                    <a th:href="@{/formSearchMovies}">Cerca Film</a>
+                </div>
+            </div>
 
-                <li class="dropdown">
-                    <p>Film</p>
-                    <div class="dropdown-content">
-                        <a th:href="@{/formNewMovie}">Nuovo Film</a>
-                        <a th:href="@{/movies}">Tutti i Film</a>
-                        <a th:href="@{/formSearchMovies}">Cerca Film</a>
-                    </div>
-                </li>
+            <div class="dropdown">
+                <p>Artisti</p>
+                <div class="dropdown-content">
+                    <a th:href="@{/formNewArtist}">Nuovo Artista</a>
+                    <a th:href="@{/artists}">Tutti gli Artisti</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
 
-                <li class="dropdown">
-                    <p>Artisti</p>
-                    <div class="dropdown-content">
-                        <a th:href="@{/formNewArtist}">Nuovo Artista</a>
-                        <a th:href="@{/artists}">Tutti gli Artisti</a>
-                        <a href="#">Link 3</a>
-                    </div>
-                </li>
-
-                <li class="dropdown">
-                    <p>Gestione</p>
-                    <div class="dropdown-content">
-                        <a th:href="@{/manageMovies}">Gestisci Film</a>
-                        <a href="#">Link 2</a>
-                        <a href="#">Link 3</a>
-                    </div>
-                </li>
-            </ul>
+            <div class="dropdown">
+                <p>Gestione</p>
+                <div class="dropdown-content">
+                    <a th:href="@{/manageMovies}">Gestisci Film</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
         </nav>
     </header>
 
-    <main>
+    <main class="evenly-spacer margin-top">
         <div class="box">
             <h2 class="title">Benvenuto!</h2>
-            <h3 class="description">In SIWMovie potrai visualizzare e gestire una raccolta di film e Artisti, e scoprire le ultime news dal mondo del cinema!</h3>
+            <h3 class="description">In SIWMovie potrai visualizzare e gestire una raccolta di film e Artisti, e scoprire
+                le ultime news dal mondo del cinema!</h3>
         </div>
-    </main>
+
+        <!---<div class="card-slideshow" th:each="genre: ${genres}">
+            <div class="card-container">
+                <div class="card" th:each="movie:${genre.movies}">
+                    <div class="card-img">
+                        <img th:src="${movie.urlImage}">
+                    </div>
+                    <div class="card-info">
+                        <a th:href="@{'/movies' + '/' + ${movie.id} }" class="link">
+                            <h3 th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>-->
 
 </body>
 

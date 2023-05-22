@@ -14,19 +14,21 @@
     <div th:insert="~{index.html :: header}"> </div>
 
     <main class="evenly-spacer margin-top">
-        <form method="POST" th:action="@{/movies}" th:object="${movie}" class="box">
-            <h2 class="title">Inserisci un Film</h2>
+        <form method="POST" th:action="@{'/addReviewTo/' +${movie.id}}" th:object="${movie}" class="box">
+            <h2 class="title" th:text="'Inserisci una Recensione per '+ ${movie.title} +' '+ ${movie.year}">Inserisci una Recensione per Titolo</h2>
+
             <div class="input-content">
-                <input type="text" placeholder="Titolo del Film" class="form-input" th:field="${movie.title}">
+                <input type="text" placeholder="Titolo" class="form-input" th:field="${review.title}">
                 <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
                 
-                <input type="text" placeholder="Anno del Film" class="form-input" th:field="${movie.year}">
+                <input type="text" placeholder="Contenuto" class="form-input" th:field="${review.content}">
                 <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
                 
-                <input type="url" placeholder="URL dell'immagine" class="form-input" th:field="${movie.urlImage}">
+                <input type="text" placeholder="Valutazione" class="form-input" th:field="${review.valutation}">
             </div>
+
             <div>
-                <input type="submit" class="submit" th:href="@{/index}">
+                <input type="submit" class="submit">
                 <div th:if="${#fields.hasGlobalErrors()}">
                    <h3 class="error" th:each="err:${#fields.globalErrors()}" th:text="${err}">Errore</h3>
                 </div>
