@@ -165,8 +165,6 @@ nav {
     width: 100px;
     height: 45px;
     transition: .3s;
-
-    margin-top: 50%;
 }
 
 .submit:hover {

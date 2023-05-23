@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -22,15 +24,16 @@ public class Review {
 	private String title;
 
 	@NotBlank
-    private String conent;
+    private String content;
 
 	@NonNull
+	@Min(1) @Max(5)
     private int valutation;
     
     @ManyToOne
     private Movie movie;
 
-	@OneToOne
+	@ManyToOne
 	private User user;
 
     public User getUser() {
@@ -97,12 +100,12 @@ public class Review {
 		this.title = title;
 	}
 
-	public String getConent() {
-		return conent;
+	public String getContent() {
+		return content;
 	}
 
-	public void setConent(String conent) {
-		this.conent = conent;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public int getValutation() {

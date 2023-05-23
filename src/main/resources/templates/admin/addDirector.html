@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie -Tutti gli Artisti</title>
-    <link rel="stylesheet" th:href="@{/stile.css}">
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 
 <body class="background">
@@ -30,7 +30,7 @@
                             th:src="${director.urlImage}">
                     </div>
                     <div class="card-info">
-                        <a th:href="@{'/setDirector' + '/' + ${movie.id} + '/' + ${director.id}}" class="link" th:text="${director.name} + ' ' + ${director.surname} "><h2>Info</h2></a>
+                        <a th:href="@{'/admin/setDirector/' + ${movie.id} + '/' + ${director.id}}" class="link" th:text="${director.name} + ' ' + ${director.surname} "><h2>Info</h2></a>
                     </div>
                 </div>
             </div>

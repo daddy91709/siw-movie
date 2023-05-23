@@ -1,9 +1,5 @@
 package it.uniroma3.siw.controller;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,51 +24,51 @@ public class MovieController {
   @Autowired ArtistRepository artistRepository;
 
 	
-	@GetMapping("/manageMovies")
+	@GetMapping("/admin/manageMovies")
 	public String managemovies(Model model) {
 		model.addAttribute("movies", this.movieRepository.findAll());
-		return "manageMovies.html";
+		return "/admin/manageMovies.html";
 	}
 	
-	@GetMapping("/manageMovies/{id}")
+	@GetMapping("/admin/manageMovies/{id}")
 	public String updateMovie(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("movie", this.movieRepository.findById(id).get());
-		return "manageMovie.html";
+		return "/admin/manageMovie.html";
 	}
 		
   
-  @GetMapping("/formNewMovie")
+  @GetMapping("/admin/formNewMovie")
     public String formNewMovie(Model model) {
     model.addAttribute("movie", new Movie());
-    return "formNewMovie.html";
+    return "/admin/formNewMovie.html";
   }
   
-  @GetMapping("/addDirector/{id}")
+  @GetMapping("/admin/addDirector/{id}")
 	public String addDirector(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("movie", this.movieRepository.findById(id).get());
 		model.addAttribute("directors", this.artistRepository.findAll());
-		return "addDirector.html";
+		return "/admin/addDirector.html";
 	}
 	
-	@GetMapping("/setDirector/{idMovie}/{idDirector}")
+	@GetMapping("/admin/setDirector/{idMovie}/{idDirector}")
 	public String setDirector(@PathVariable("idMovie") Long idMovie, @PathVariable("idDirector") Long idDirector, Model model) {
 		Movie movie= this.movieRepository.findById(idMovie).get();
 		Artist director= this.artistRepository.findById(idDirector).get();
 		movie.setDirector(director);
 		this.movieRepository.save(movie);
 		model.addAttribute("movie", movie);
-		return "manageMovie.html";
+		return "/admin/manageMovie.html";
 	}
 	
-	  @GetMapping("/manageActors/{id}")
+	  @GetMapping("/admin/manageActors/{id}")
 		public String manageActors(@PathVariable("id") Long id, Model model) {
 		  Movie movie= this.movieRepository.findById(id).get();
 			model.addAttribute("movie",movie);
 			model.addAttribute("artists", this.artistRepository.getArtistByMoviesNotContains(movie));
-			return "manageActors.html";
+			return "/admin/manageActors.html";
 		}
 	  
-	  @GetMapping("/addActor/{idArtist}/{idMovie}")
+	  @GetMapping("/admin/addActor/{idArtist}/{idMovie}")
 	  public String addActor(@PathVariable("idArtist") Long idArtist, @PathVariable("idMovie") Long idMovie, Model model){
 		  Movie movie= this.movieRepository.findById(idMovie).get();
 		  Artist artist= this.artistRepository.findById(idArtist).get();
@@ -85,10 +81,10 @@ public class MovieController {
 		  
 		  model.addAttribute("movie",movie);
 		  model.addAttribute("artists",this.artistRepository.getArtistByMoviesNotContains(movie));
-		  return "manageActors.html"; 
+		  return "/admin/manageActors.html"; 
 	  }
 	  
-	  @GetMapping("/removeActor/{idArtist}/{idMovie}")
+	  @GetMapping("/admin/removeActor/{idArtist}/{idMovie}")
 	  public String removeActor(@PathVariable("idArtist") Long idArtist, @PathVariable("idMovie") Long idMovie, Model model){
 		  Movie movie= this.movieRepository.findById(idMovie).get();
 		  Artist artist= this.artistRepository.findById(idArtist).get();
@@ -101,10 +97,10 @@ public class MovieController {
 		  
 		  model.addAttribute("movie",movie);
 		  model.addAttribute("artists",this.artistRepository.getArtistByMoviesNotContains(movie));
-		  return "manageActors.html"; 
+		  return "/admin/manageActors.html"; 
 	  }
 
-  @PostMapping("/movies")
+  @PostMapping("/admin/movies")
   public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, Model model) {
 	  this.movieValidator.validate(movie,bindingResult);
 	  if(!bindingResult.hasErrors())
@@ -115,7 +111,7 @@ public class MovieController {
     } 
     else
     {
-      return "formNewMovie.html";
+      return "/admin/formNewMovie.html";
     }
   }
   
@@ -140,10 +136,5 @@ public class MovieController {
   public String searchMovies(Model model, @RequestParam Integer year) {
     model.addAttribute("movies", this.movieRepository.findByYear(year));
     return "foundMovies.html";
-  }
-  
-  @GetMapping("/index")
-  public String toIndex() {
-    return "index.html";
   }
 }

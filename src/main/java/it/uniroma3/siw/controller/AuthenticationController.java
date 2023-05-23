@@ -1,5 +1,6 @@
 package it.uniroma3.siw.controller;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,13 +33,13 @@ public class AuthenticationController {
         return "login.html";
     }
 
-    @GetMapping("/user/formNewUser")
-    public String formNewstaff(Model model) {
+    @GetMapping("/formNewUser")
+    public String formNewUser(Model model) {
         model.addAttribute("user", new User());
         return "formNewUser.html";
     }
 
-    @PostMapping(value = { "/user/formNewUser" })
+    @PostMapping(value = { "/formNewUser" })
     public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult userBindingResult, Model model) {
         // se user ha contenuti validi, memorizza User e le Credentials nel DB
         this.userValidator.validate(user, userBindingResult);
@@ -50,7 +51,7 @@ public class AuthenticationController {
             userService.saveUser(user);
 
             model.addAttribute("user", user);
-            return "user.html";
+            return "index.html";
         }
         return "formNewUser.html";
     }
@@ -85,5 +86,4 @@ public class AuthenticationController {
         }
         return "login.html";
     }
-
 }

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiwMovie -Aggiungi un Film</title>
-    <link rel="stylesheet" th:href="@{/stile.css}">
+    <title>SiwMovie -Recensisci Film</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 
 <body class="background">
@@ -14,7 +14,7 @@
     <div th:insert="~{index.html :: header}"> </div>
 
     <main class="evenly-spacer margin-top">
-        <form method="POST" th:action="@{'/addReviewTo/' +${movie.id}}" th:object="${movie}" class="box">
+        <form method="POST" th:action="@{'/user/addReviewTo/' + ${movie.id}}" th:object="${review}" class="box">
             <h2 class="title" th:text="'Inserisci una Recensione per '+ ${movie.title} +' '+ ${movie.year}">Inserisci una Recensione per Titolo</h2>
 
             <div class="input-content">
@@ -22,9 +22,10 @@
                 <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
                 
                 <input type="text" placeholder="Contenuto" class="form-input" th:field="${review.content}">
-                <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
+                <span class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
                 
                 <input type="text" placeholder="Valutazione" class="form-input" th:field="${review.valutation}">
+                <span class="error" th:if="${#fields.hasErrors('valutation')}" th:errors="*{valutation}"></span>
             </div>
 
             <div>

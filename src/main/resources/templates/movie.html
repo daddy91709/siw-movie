@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie -Film</title>
-    <link rel="stylesheet" th:href="@{/stile.css}">
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 
 <body class="background">
@@ -39,12 +39,12 @@
         <div class="margin-top">
             <h2>Recensioni</h2>
             <div>
-                <a th:href="'/user/reviewFilm/' + ${movie.id}" class="submit">Aggiungi una Recensione</a>
+                <a th:href="@{'/user/reviewFilm/' + ${movie.id}}" class="submit">Aggiungi una Recensione</a>
             </div>
 
-            <div th:each="review: ${reviews}">
-                <h2 th:text="'Titolo: ' + ${review.title} + 'di ' ${review.user.name} + ' ' + ${review.user.surname}"></h2>
-                <progress max="5" th:value="${review.valutation}"></progress>
+            <div th:each="review: ${movie.reviews}">
+                <h2 th:text="'Titolo: ' + ${review.title} + ' di ' + ${review.user.name} + ' ' + ${review.user.surname}"></h2>
+                <progress max="5" th:value="${review.valutation}" style="accent-color: yellow;"></progress>
             </div>
         </div>
     </main>

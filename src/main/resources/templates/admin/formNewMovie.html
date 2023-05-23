@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiwMovie -Aggiungi un Film</title>
-    <link rel="stylesheet" th:href="@{/stile.css}">
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 
 <body class="background">
@@ -14,7 +14,7 @@
     <div th:insert="~{index.html :: header}"> </div>
 
     <main class="evenly-spacer margin-top">
-        <form method="POST" th:action="@{/movies}" th:object="${movie}" class="box">
+        <form method="POST" th:action="@{/admin/movies}" th:object="${movie}" class="box">
             <h2 class="title">Inserisci un Film</h2>
             <div class="input-content">
                 <input type="text" placeholder="Titolo del Film" class="form-input" th:field="${movie.title}">

@@ -11,6 +11,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,41 +20,45 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import it.uniroma3.siw.model.Credentials;
+import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.service.CredentialsService;
+
 import static it.uniroma3.siw.model.Credentials.ADMIN_ROLE;
 import static it.uniroma3.siw.model.Credentials.DEFAULT_ROLE;
 
 @Configuration
 @EnableWebSecurity
 
-public class AuthConfiguration{
+public class AuthConfiguration {
 
     @Autowired
-	DataSource dataSource;
-
+    DataSource dataSource;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        
-        http
-        .authorizeHttpRequests()
-        .requestMatchers(HttpMethod.GET, "/", "/index", "/login", "/css/**", "/svgs/**", "favicon.ico").permitAll()
-        .requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(ADMIN_ROLE)
-        .requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(ADMIN_ROLE)
-        .requestMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority(DEFAULT_ROLE)
-        .requestMatchers(HttpMethod.POST, "/user/**").hasAnyAuthority(DEFAULT_ROLE)
-        .anyRequest().authenticated()
-        .and().exceptionHandling().accessDeniedPage("/login")
-        
-        .and().formLogin()
-        .loginPage("/login")
-        .defaultSuccessUrl("/success", true)
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        .and().logout()
-        .logoutUrl("/logout")
-        .logoutSuccessUrl("/login").invalidateHttpSession(true)
-        .deleteCookies("JSESSIONID")
-        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-        .clearAuthentication(true).permitAll();
+        http
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/", "/index", "/login", "/css/**", "/svgs/**", "favicon.ico")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority(DEFAULT_ROLE)
+                .requestMatchers(HttpMethod.POST, "/user/**").hasAnyAuthority(DEFAULT_ROLE)
+                .anyRequest().authenticated()
+                .and().exceptionHandling().accessDeniedPage("/login")
+
+                .and().formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/success", true)
+
+                .and().logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login").invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .clearAuthentication(true).permitAll();
 
         return http.build();
     }
@@ -65,8 +71,6 @@ public class AuthConfiguration{
         return provider;
     }
 
-
-
     @Bean
     public UserDetailsService userDetailsService() {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager();
@@ -77,7 +81,14 @@ public class AuthConfiguration{
     }
 
     @Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    public static User getCurrentUser(CredentialsService credentialsService) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+        return credentials.getUser();
+    }
+
 }

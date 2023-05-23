@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie -Film</title>
-    <link rel="stylesheet" th:href="@{/stile.css}">
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 
 <body class="background">
@@ -19,7 +19,7 @@
 		<div class="column"> 
 			<h1 th:text="'Attori Selezionati per '+${movie.title}">Attori Selezionati Film</h1>
 			<div class="artist-box" th:each="artist: ${movie.artists}">
-				<a class="link" th:href="@{'/removeActor'+ '/' + ${artist.id} + '/' + ${movie.id}}">
+				<a class="link" th:href="@{'/admin/removeActor'+ '/' + ${artist.id} + '/' + ${movie.id}}">
 				   <h3 th:text="${artist.name} + ' ' + ${artist.surname}" >Nome Cognome</h3>
                 </a>
                 <img th:src="${artist.urlImage}">
@@ -29,7 +29,7 @@
 		<div class="column">
 			<h1 th:text="'Attori Disponibili per '+${movie.title}">Attori Disponibili Film</h1>
 			<div class="artist-box" th:each="artist: ${artists}">
-				<a class="link" th:href="@{'/addActor'+ '/' + ${artist.id} + '/' + ${movie.id}}">
+				<a class="link" th:href="@{'/admin/addActor'+ '/' + ${artist.id} + '/' + ${movie.id}}">
 				   <h3 th:text="${artist.name} + ' ' + ${artist.surname}" >Nome Cognome</h3>
                 </a>
 				<img th:src="${artist.urlImage}">
@@ -43,7 +43,7 @@
 		</div>
 		
 		<div style="display: flex; justify-content: center; margin-top: 5%;">
-			<a th:href="@{'/manageMovies' + '/' + ${movie.id}}" >
+			<a th:href="@{'/admin/manageMovies' + '/' + ${movie.id}}" >
 		       <button class="submit" style="background-color: #1f2a8a;">Conferma</button>
 		    </a>
 		</div>

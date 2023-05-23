@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie -Gestisci i Film</title>
-    <link rel="stylesheet" th:href="@{/stile.css}">
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 
 <body class="background">
@@ -30,7 +30,7 @@
                             th:src="${movie.urlImage}">
                     </div>
                     <div class="card-info">
-                        <a th:href="@{'/manageMovies' + '/' + ${movie.id}}" class="link" th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</a>
+                        <a th:href="@{'/admin/manageMovies' + '/' + ${movie.id}}" class="link" th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</a>
                     </div>
                 </div>
             </div>

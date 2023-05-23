@@ -25,7 +25,7 @@ public class Movie {
     @ManyToOne
     private Artist director;
 
-	@OneToMany(mappedBy="movie")
+	@OneToMany(mappedBy="movie") //introdurre fetch type lazy e gettare dalla repo?
 	private List<Review> reviews;
     
 	public List<Review> getReviews() {

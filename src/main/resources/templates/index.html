@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie</title>
-    <link rel="stylesheet" th:href="@{/stile.css}">
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 
 <body class="background">
@@ -17,7 +17,7 @@
             <div class="dropdown">
                 <p>Film</p>
                 <div class="dropdown-content">
-                    <a th:href="@{/formNewMovie}">Nuovo Film</a>
+                    <a th:href="@{/admin/formNewMovie}">Nuovo Film</a>
                     <a th:href="@{/movies}">Tutti i Film</a>
                     <a th:href="@{/formSearchMovies}">Cerca Film</a>
                 </div>
@@ -26,7 +26,7 @@
             <div class="dropdown">
                 <p>Artisti</p>
                 <div class="dropdown-content">
-                    <a th:href="@{/formNewArtist}">Nuovo Artista</a>
+                    <a th:href="@{/admin/formNewArtist}">Nuovo Artista</a>
                     <a th:href="@{/artists}">Tutti gli Artisti</a>
                     <a href="#">Link 3</a>
                 </div>
@@ -35,11 +35,16 @@
             <div class="dropdown">
                 <p>Gestione</p>
                 <div class="dropdown-content">
-                    <a th:href="@{/manageMovies}">Gestisci Film</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                    <a th:href="@{/admin/manageMovies}">Gestisci Film</a>
+                    <a th:href="@{/formNewUser}">Nuovo Utente</a>
+                    <a th:href="@{/login}">Login</a>
                 </div>
             </div>
+
+            <a class="dropdown" th:href="@{/logout}" style="display: flex; width: fit-content;">
+                <p sec:authentication="name">nomeUtente:</p>
+                <p th:text="': LogOut'"></p>
+            </a>
         </nav>
     </header>
 

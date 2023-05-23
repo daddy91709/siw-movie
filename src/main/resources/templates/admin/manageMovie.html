@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIWMovie -Gestisci Film</title>
-    <link rel="stylesheet" th:href="@{/stile.css}">
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 
 <body class="background">
@@ -22,7 +22,7 @@
                     <div class="film-img">
                         <img th:src="${movie.urlImage}">
                     </div>
-                    <a class="link" th:href="@{'/manageActors' + '/' + ${movie.id}}">
+                    <a class="link" th:href="@{'/admin/manageActors/' + ${movie.id}}">
                         <h3>Aggiungi/Rimuovi Attori</h3>
                     </a>
                 </div>
@@ -31,7 +31,7 @@
                     <div class="film-img">
                         <img th:src="${movie.director.urlImage}">
                     </div>
-                    <a class="link" th:href="@{'/addDirector' + '/' + ${movie.id}}">
+                    <a class="link" th:href="@{'/admin/addDirector' + '/' + ${movie.id}}">
                         <h3>Modifica Regista</h3>
                     </a>
                 </div>
@@ -40,7 +40,7 @@
                     <div class="film-img">
                         <img th:src="@{/notFound.jpg}">
                     </div>
-                    <a class="link" th:href="@{'/addDirector' + '/' + ${movie.id}}">
+                    <a class="link" th:href="@{'/admin/addDirector' + '/' + ${movie.id}}">
                         <h3>Aggiungi Regista</h3>
                     </a>
                 </div>
