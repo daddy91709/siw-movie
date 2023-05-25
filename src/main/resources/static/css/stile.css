@@ -93,6 +93,54 @@ nav {
     width: 500px;
 }
 
+/*review*/
+.movie-banner{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+
+    /*estetica box*/
+    background-color: aliceblue;
+    border-radius: 10px;
+    box-shadow: 20px 20px 60px #1f2a8a;
+
+    height: 40%;
+    width: 90%;
+}
+
+.movie-reviews-banner{
+    margin-top: 2%;
+
+    background-color: aliceblue;
+    border-radius: 10px;
+    box-shadow: 20px 20px 60px #1f2a8a;
+
+    height: 350px;
+    width: 90%;
+}
+
+.review-container{
+    overflow-y: scroll;
+    height: 60%;
+}
+
+.review-content{
+    display: flex;
+    align-items: center;
+    background-color: rgb(197, 202, 206);
+}
+
+.review-content:nth-child(even){
+    background-color: aliceblue;
+}
+
+.valutation-bar{
+    accent-color: yellow;
+    margin-left: 2%;
+    height: 20px;
+}
+
+/*elementi*/
 .evenly-spacer{
     display: flex;
     justify-content: space-evenly;
@@ -267,6 +315,10 @@ h2 {
 h1{
     margin-top: 2%;
     color: aliceblue;
+}
+
+.movie-banner a>h2:hover{
+    color:#4954bd;
 }
 
 .description{

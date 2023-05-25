@@ -76,4 +76,12 @@ public class ReviewController {
 			return "/user/formNewReview.html";
 		}
 	}
+
+	@GetMapping("/review/{id}")
+	public String showReview(@PathVariable("id") Long id, Model model){
+		Review review = this.reviewRepository.findById(id).get();
+		model.addAttribute("review", review);
+		model.addAttribute("movie", review.getMovie());
+		return "review.html";
+	}
 }

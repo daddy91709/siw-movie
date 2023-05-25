@@ -13,40 +13,54 @@
 
     <div th:insert="~{index.html :: header}"> </div>
 
-    <main class="column margin-top">
-        <div class="box">
-            <h2 class="title" th:text="${movie.title} + ' (' + ${movie.year} + ')'">Titolo</h2>
-            <div class="box-content">
-                <div class="column">
-                    <div class="film-img">
-                        <img th:src="${movie.urlImage}">
-                    </div>
-                    <a class="link" th:href="@{'/artistsForMovie' + '/' + ${movie.id}}"> 
-                        <h3>Lista Attori</h3> 
+    <main class="column margin-top" style="margin-top: 2%;">
+
+        <div th:fragment="movie-banner" class="movie-banner">
+            <div id="movie-image" class="column" style="height:100%; width:40%;">
+                <img th:src="${movie.urlImage}" style="height: 300px; width: 220px;margin: 10px 10px 10px 30px;">
+            </div>
+            <div id="movie-info" style="height:100%; width:60%;">
+                <div>
+                    <h2 th:text="'Titolo: '+${movie.title}"></h2>
+                </div>
+                <hr>
+                <div>
+                    <h2 th:text="'Anno di Pubblicazione: '+${movie.year}"></h2>
+                </div>
+                <hr>
+                <div th:if="${movie.director}">
+                    <a class="link" th:href="@{'/artists' + '/' + ${movie.director.id}}">
+                        <h2 th:text="'Regista: '+${movie.director.name} + ' ' + ${movie.director.surname}">Regista</h2>
                     </a>
                 </div>
-                <div class="column" th:if="${movie.director}">
-                    <div class="film-img">
-                        <img th:src="${movie.director.urlImage}">
-                    </div>
-                    <a class="link" th:href="@{'/artists' + '/' + ${movie.director.id}}"> 
-                        <h3 th:text="'Regista: '+ ${movie.director.name} + ' ' + ${movie.director.surname}">Regista</h3> 
+                <div th:unless="${movie.director}">
+                    <h2 th:text="'Ancora nessun Regista'">Regista</h2>
+                </div>
+                <hr>
+                <div>
+                    <a class="link" th:href="@{'/artistsForMovie' + '/' + ${movie.id}}">
+                        <h2 th:text="'Lista Attori: Visualizza'"></h2>
                     </a>
+                </div>
+            </div>
+    </div>
+        <div class="movie-reviews-banner">
+            <h2 style="margin-left: 20px">Recensioni</h2>
+            <div style="display: flex; justify-content: flex-end;">
+                <a style="margin: 10px 50px 10px 10px; height: 50px; width:max-content; display: flex; align-items: center" class="submit link" th:href="@{'/user/reviewFilm/' + ${movie.id}}">Aggiungi una Recensione</a>
+            </div>
+            <div class="review-container">
+                <div class="review-content" th:each="review: ${movie.reviews}">
+                    <h2
+                        th:text="'Titolo: ' + ${review.title} + ' di ' + ${review.user.name} + ' ' + ${review.user.surname}+' ○ Valutazione: '+ ${review.valutation} +'/5'">
+                    </h2>
+                    <progress max="5" th:value="${review.valutation}" class="valutation-bar"></progress>
+                    <a th:href="@{'/review/'+${review.id}}" class="link" style="margin-left: 10%;"><h2>Leggi Recensione</h2></a>
                 </div>
             </div>
         </div>
 
-        <div class="margin-top">
-            <h2>Recensioni</h2>
-            <div>
-                <a th:href="@{'/user/reviewFilm/' + ${movie.id}}" class="submit">Aggiungi una Recensione</a>
-            </div>
 
-            <div th:each="review: ${movie.reviews}">
-                <h2 th:text="'Titolo: ' + ${review.title} + ' di ' + ${review.user.name} + ' ' + ${review.user.surname}"></h2>
-                <progress max="5" th:value="${review.valutation}" style="accent-color: yellow;"></progress>
-            </div>
-        </div>
     </main>
 
 </body>

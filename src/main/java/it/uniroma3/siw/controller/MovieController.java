@@ -134,7 +134,7 @@ public class MovieController {
 
   @GetMapping("/searchMovies")
   public String searchMovies(Model model, @RequestParam Integer year) {
-    model.addAttribute("movies", this.movieRepository.findByYear(year));
+    model.addAttribute("movies", this.movieRepository.findAllByYear(year));
     return "foundMovies.html";
   }
 }
