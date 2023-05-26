@@ -11,7 +11,7 @@
 
 <body class="background">
 
-    <div th:insert="~{index.html :: header}"> </div>
+    <div th:insert="~{admin/adminindex.html :: header}"> </div>
 
     <main>
 		<div th:if="!${artists.isEmpty()} or !${movie.artists.isEmpty()}" class="evenly-spacer margin-top">

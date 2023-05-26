@@ -66,7 +66,7 @@ public class AuthenticationController {
         } else {
             if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
                 // carica la pagina utente autenticato
-                return "index.html";
+                return "admin/adminindex.html";
             }
         }
         return "index.html";
@@ -79,7 +79,7 @@ public class AuthenticationController {
         Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
         if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
             // carica la pagina admin
-            return "index.html";
+            return "admin/adminindex.html";
         } else if (credentials.getRole().equals(Credentials.DEFAULT_ROLE)) {
             // carica la pagina utente autenticato
             return "index.html";

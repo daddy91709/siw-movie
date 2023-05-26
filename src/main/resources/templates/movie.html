@@ -27,6 +27,10 @@
                 <div>
                     <h2 th:text="'Anno di Pubblicazione: '+${movie.year}"></h2>
                 </div>
+                <!--
+                <div style="display: flex;">
+                    <h2 th:text="'Generi: '"></h2><h2 th:each="genre:movie.genre"></h2>
+                </div>-->
                 <hr>
                 <div th:if="${movie.director}">
                     <a class="link" th:href="@{'/artists' + '/' + ${movie.director.id}}">

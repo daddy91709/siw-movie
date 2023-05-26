@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWMovie -Recensione Film</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{index.html :: header}"> </div>
+
+    <main class="column" style="margin-top: 2%;">
+
+        <div th:insert="~{admin/manageMovie.html :: movie-banner}" style="width:100%;" class="column"></div>
+        <div class="movie-reviews-banner">
+                <div style="display: flex; align-items: center;">
+
+                    <h2 th:text="'Titolo: ' + ${review.title} + ' di ' + ${review.user.name} + ' ' + ${review.user.surname}+' ○ Valutazione: '+ ${review.valutation} +'/5'"></h2>
+                    <progress max="5" th:value="${review.valutation}" class="valutation-bar"></progress>
+
+                    <div style="display: flex; justify-content: flex-end; width: 55%; align-items: center;">
+                        <h2>Rimuovi Recensione</h2>
+                        <a th:href="@{'/admin/deleteReview/'+${review.id}}">
+                            <img th:src="@{/bin.svg}" style="width: 40px; height: 40px; margin-left: 20%;">
+                        </a>
+                    </div>
+
+                </div>
+
+                <hr>
+                <div style="overflow-y:scroll">
+                    <h2 th:text="${review.content}"></h2>
+                </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

@@ -49,14 +49,14 @@
 
             </div>
 
-            <div style="display: flex;margin-left: 5%;align-items:center;">
+            <div style="display: flex;margin-left: 5%; margin-top: 2%; align-items:center;">
                 <div class="column" style="width: 70%">
                     <input type="text" placeholder="Contenuto" class="form-input"
                         style="height: 160px; width:100%; margin: 0px 3% 0px 3%; font-size: large;" th:field="${review.content}">
                     <span class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
                 </div>
 
-                <div class="column" style="align-self: ;">
+                <div class="column" style="margin-left:2%;">
                     <input type="submit" class="submit">
                     <div th:if="${#fields.hasGlobalErrors()}">
                         <h3 class="error" th:each="err:${#fields.globalErrors()}" th:text="${err}">Errore</h3>

@@ -84,4 +84,23 @@ public class ReviewController {
 		model.addAttribute("movie", review.getMovie());
 		return "review.html";
 	}
+
+	@GetMapping("admin/manageReview/{id}")
+	public String manageReview(@PathVariable("id") Long id, Model model){
+		Review review = this.reviewRepository.findById(id).get();
+		model.addAttribute("review", review);
+		model.addAttribute("movie", review.getMovie());
+		return "admin/manageReview.html";
+	}
+
+	@GetMapping("admin/deleteReview/{id}")
+	public String deleteReview(@PathVariable("id") Long id, Model model){
+		Review review = this.reviewRepository.findById(id).get();
+		review.getMovie().getReviews().remove(review);
+
+		model.addAttribute("movie", review.getMovie());
+
+		this.reviewRepository.delete(review);
+		return "admin/manageMovie.html";
+	}
 }

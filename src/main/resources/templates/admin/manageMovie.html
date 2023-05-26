@@ -11,42 +11,63 @@
 
 <body class="background">
 
-    <div th:insert="~{index.html :: header}"> </div>
+    <div th:insert="~{admin/adminindex.html :: header}"> </div>
 
-    <main class="evenly-spacer margin-top">
-        <div class="box">
-            <h2 class="title" th:text="${movie.title} + ' (' + ${movie.year} + ')'">Titolo</h2>
-            <div class="box-content">
-				
-				<div class="column">
-                    <div class="film-img">
-                        <img th:src="${movie.urlImage}">
-                    </div>
+    <main class="column margin-top" style="margin-top: 2%;">
+
+        <div th:fragment="movie-banner" class="movie-banner">
+            <div id="movie-image" class="column" style="height:100%; width:40%;">
+                <img th:src="${movie.urlImage}" style="height: 300px; width: 220px;margin: 10px 10px 10px 30px;">
+            </div>
+            <div id="movie-info" style="height:100%; width:60%;">
+                <div>
+                    <h2 th:text="'Titolo: '+${movie.title}"></h2>
+                </div>
+                <hr>
+                <div>
+                    <h2 th:text="'Anno di Pubblicazione: '+${movie.year}"></h2>
+                </div>
+                <!--
+                <div style="display: flex;">
+                    <h2 th:text="'Generi: '"></h2><h2 th:each="genre:movie.genre"></h2>
+                </div>-->
+                <hr>
+                <div th:if="${movie.director}">
+                    <a class="link" th:href="@{'/admin/addDirector' + '/' + ${movie.id}}">
+                        <h2
+                            th:text="'Regista: '+${movie.director.name} + ' ' + ${movie.director.surname} + ' ○ Modifica'">
+                            Regista</h2>
+                    </a>
+                </div>
+                <div th:unless="${movie.director}">
+                    <a class="link" th:href="@{'/admin/addDirector' + '/' + ${movie.id}}">
+                        <h2 th:text="'Ancora nessun Regista ○ Aggiungi'">Regista</h2>
+                    </a>
+                </div>
+                <hr>
+                <div>
                     <a class="link" th:href="@{'/admin/manageActors/' + ${movie.id}}">
-                        <h3>Aggiungi/Rimuovi Attori</h3>
+                        <h2 th:text="'Lista Attori: Modifica'"></h2>
                     </a>
                 </div>
-				
-                <div class="column" th:if="${movie.director}">
-                    <div class="film-img">
-                        <img th:src="${movie.director.urlImage}">
-                    </div>
-                    <a class="link" th:href="@{'/admin/addDirector' + '/' + ${movie.id}}">
-                        <h3>Modifica Regista</h3>
-                    </a>
-                </div>
-                
-                <div class="column" th:unless="${movie.director}">
-                    <div class="film-img">
-                        <img th:src="@{/notFound.jpg}">
-                    </div>
-                    <a class="link" th:href="@{'/admin/addDirector' + '/' + ${movie.id}}">
-                        <h3>Aggiungi Regista</h3>
-                    </a>
-                </div>
-                
             </div>
         </div>
+
+        <div class="movie-reviews-banner">
+            <h2 style="margin-left: 20px">Recensioni</h2>
+            <div class="review-container">
+                <div class="review-content" th:each="review: ${movie.reviews}">
+                    <h2
+                        th:text="'Titolo: ' + ${review.title} + ' di ' + ${review.user.name} + ' ' + ${review.user.surname}+' ○ Valutazione: '+ ${review.valutation} +'/5'">
+                    </h2>
+                    <progress max="5" th:value="${review.valutation}" class="valutation-bar"></progress>
+                    <a th:href="@{'/admin/manageReview/'+${review.id}}" class="link" style="margin-left: 10%;">
+                        <h2>Leggi Recensione</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </main>
 
 </body>

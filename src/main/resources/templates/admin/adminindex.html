@@ -17,6 +17,7 @@
             <div class="dropdown">
                 <p>Film</p>
                 <div class="dropdown-content">
+                    <a th:href="@{/admin/formNewMovie}">Nuovo Film</a>
                     <a th:href="@{/movies}">Tutti i Film</a>
                     <a th:href="@{/formSearchMovies}">Cerca Film</a>
                 </div>
@@ -25,14 +26,16 @@
             <div class="dropdown">
                 <p>Artisti</p>
                 <div class="dropdown-content">
+                    <a th:href="@{/admin/formNewArtist}">Nuovo Artista</a>
                     <a th:href="@{/artists}">Tutti gli Artisti</a>
                     <a href="#">Link 3</a>
                 </div>
             </div>
 
             <div class="dropdown">
-                <p>Account</p>
+                <p>Gestione</p>
                 <div class="dropdown-content">
+                    <a th:href="@{/admin/manageMovies}">Gestisci Film</a>
                     <a th:href="@{/formNewUser}">Nuovo Utente</a>
                     <a th:href="@{/login}">Login</a>
                 </div>
