@@ -2,6 +2,10 @@ package it.uniroma3.siw.model;
 
 import java.util.List;
 import java.util.Objects;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import jakarta.validation.constraints.*;
 import jakarta.persistence.*;
 
@@ -26,6 +30,7 @@ public class Movie {
     private Artist director;
 
 	@OneToMany(mappedBy="movie") //introdurre fetch type lazy e gettare dalla repo?
+	@Cascade(CascadeType.ALL)
 	private List<Review> reviews;
     
 	public List<Review> getReviews() {

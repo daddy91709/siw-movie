@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwMovie -Modifica un Film</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{admin/adminindex.html :: header}"> </div>
+
+    <main class="evenly-spacer margin-top">
+        <form method="POST" th:action="@{/admin/editMovie/{id}(id=${movie.id})}" th:object="${movie}" class="box">
+            <h2 class="title" th:text="'Modifica ' + ${movie.title}">Modifica Film</h2>
+            <div class="input-content">
+                <input type="text" placeholder="Nuovo Titolo" class="form-input" th:field="${movie.title}">
+                <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+                
+                <input type="text" placeholder="Nuovo Anno" class="form-input" th:field="${movie.year}">
+                <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
+                
+                <input type="url" placeholder="Nuovo URL" class="form-input" th:field="${movie.urlImage}">
+            </div>
+            <div>
+                <input type="submit" class="submit" th:href="@{/index}">
+                <div th:if="${#fields.hasGlobalErrors()}">
+                   <h3 class="error" th:each="err:${#fields.globalErrors()}" th:text="${err}">Errore</h3>
+                </div>
+            </div>
+        </form>
+    </main>
+
+</body>
+
+</html>

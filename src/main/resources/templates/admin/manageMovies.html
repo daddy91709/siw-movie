@@ -30,7 +30,9 @@
                             th:src="${movie.urlImage}">
                     </div>
                     <div class="card-info">
-                        <a th:href="@{'/admin/manageMovies' + '/' + ${movie.id}}" class="link" th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</a>
+                        <a th:href="@{'/admin/manageMovies' + '/' + ${movie.id}}" class="link" >
+                            <h3 th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'"> Info </h3>
+                        </a>
                     </div>
                 </div>
             </div>

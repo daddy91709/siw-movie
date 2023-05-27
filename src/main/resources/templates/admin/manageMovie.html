@@ -16,9 +16,20 @@
     <main class="column margin-top" style="margin-top: 2%;">
 
         <div th:fragment="movie-banner" class="movie-banner">
+
+            <div id="manage-options" class="column" style="justify-content: space-evenly; height: 300px; margin-left: 20px;">
+                <a th:href="@{'/admin/editMovie/'+${movie.id}}">
+                    <img th:src="@{/pngs/edit.png}" style="width: 40px; height: 40px;">
+                </a>
+                <a th:href="@{'/admin/deleteMovie/'+${movie.id}}">
+                    <img th:src="@{/svgs/bin.svg}" style="width: 40px; height: 40px;">
+                </a>
+            </div>
+
             <div id="movie-image" class="column" style="height:100%; width:40%;">
                 <img th:src="${movie.urlImage}" style="height: 300px; width: 220px;margin: 10px 10px 10px 30px;">
             </div>
+
             <div id="movie-info" style="height:100%; width:60%;">
                 <div>
                     <h2 th:text="'Titolo: '+${movie.title}"></h2>
