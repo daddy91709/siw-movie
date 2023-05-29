@@ -156,6 +156,10 @@ nav {
     align-items: center;
 }
 
+nav:last-child(){
+    justify-content: flex-end;
+}
+
 .artist-box{
 	display: flex;
 	justify-content: space-around;
@@ -189,6 +193,15 @@ nav {
     font-family: 'Inter', sans-serif;
     outline: none;
     margin: 3%;
+}
+
+.textarea-input{
+    height: 160px;
+    width:100%;
+    margin: 0px 3% 0px 3%;
+    font-size: large;
+    overflow: hidden;
+    resize: none;
 }
 
 .form-input:focus {

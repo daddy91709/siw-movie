@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Artist;
+import it.uniroma3.siw.model.Genre;
 import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.repository.ArtistRepository;
+import it.uniroma3.siw.repository.GenreRepository;
 import it.uniroma3.siw.repository.MovieRepository;
 import it.uniroma3.siw.repository.ReviewRepository;
 import it.uniroma3.siw.validator.MovieValidator;
@@ -32,6 +34,8 @@ public class MovieController {
 	ArtistRepository artistRepository;
 	@Autowired
 	ReviewRepository reviewRepository;
+	@Autowired
+	GenreRepository genreRepository;
 
 	@GetMapping("/admin/manageMovies")
 	public String managemovies(Model model) {
@@ -199,4 +203,47 @@ public class MovieController {
 			return "/admin/formEditMovie.html";
 		}
 	}
+
+	@GetMapping("/admin/manageGenres/{id}")
+	public String manageGenres(@PathVariable("id") Long id, Model model) {
+		Movie movie = this.movieRepository.findById(id).get();
+		model.addAttribute("movie", movie);
+		model.addAttribute("genres", this.genreRepository.getGenreByMoviesNotContains(movie));
+		return "/admin/manageGenres.html";
+	}
+
+	@GetMapping("/admin/addGenre/{idGenre}/{idMovie}")
+	public String addGenre(@PathVariable("idGenre") Long idGenre, @PathVariable("idMovie") Long idMovie,
+			Model model) {
+		Movie movie = this.movieRepository.findById(idMovie).get();
+		Genre genre = this.genreRepository.findById(idGenre).get();
+
+		movie.getGenres().add(genre);
+		this.movieRepository.save(movie);
+
+		genre.getMovies().add(movie);
+		this.genreRepository.save(genre);
+
+		model.addAttribute("movie", movie);
+		model.addAttribute("genres", this.genreRepository.getGenreByMoviesNotContains(movie));
+		return "/admin/manageGenres.html";
+	}
+
+	@GetMapping("/admin/removeGenre/{idGenre}/{idMovie}")
+	public String removeGenre(@PathVariable("idGenre") Long idGenre, @PathVariable("idMovie") Long idMovie,
+			Model model) {
+		Movie movie = this.movieRepository.findById(idMovie).get();
+		Genre genre = this.genreRepository.findById(idGenre).get();
+
+		movie.getGenres().remove(genre);
+		this.movieRepository.save(movie);
+
+		genre.getMovies().remove(movie);
+		this.genreRepository.save(genre);
+
+		model.addAttribute("movie", movie);
+		model.addAttribute("genres", this.genreRepository.getGenreByMoviesNotContains(movie));
+		return "/admin/manageGenres.html";
+	}
+
 }

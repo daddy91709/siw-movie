@@ -51,8 +51,7 @@
 
             <div style="display: flex;margin-left: 5%; margin-top: 2%; align-items:center;">
                 <div class="column" style="width: 70%">
-                    <input type="text" placeholder="Contenuto" class="form-input"
-                        style="height: 160px; width:100%; margin: 0px 3% 0px 3%; font-size: large;" th:field="${review.content}">
+                    <textarea type="text" class="form-input textarea-input" th:field="${review.content}"></textarea>
                     <span class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
                 </div>
 

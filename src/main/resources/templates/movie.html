@@ -27,10 +27,6 @@
                 <div>
                     <h2 th:text="'Anno di Pubblicazione: '+${movie.year}"></h2>
                 </div>
-                <!--
-                <div style="display: flex;">
-                    <h2 th:text="'Generi: '"></h2><h2 th:each="genre:movie.genre"></h2>
-                </div>-->
                 <hr>
                 <div th:if="${movie.director}">
                     <a class="link" th:href="@{'/artists' + '/' + ${movie.director.id}}">
@@ -45,6 +41,13 @@
                     <a class="link" th:href="@{'/artistsForMovie' + '/' + ${movie.id}}">
                         <h2 th:text="'Lista Attori: Visualizza'"></h2>
                     </a>
+                </div>
+                <hr>
+                <div style="display: flex;" th:if="!${movie.genres.isEmpty()}">
+                    <h2 th:text="'Generi: '"></h2><h2 th:each="genre: ${movie.genres}" th:text="'&ThinSpace;' + ${genre.name}+'&MediumSpace;'"></h2>
+                </div>
+                <div th:unless="!${movie.genres.isEmpty()}">
+                    <h2 th:text="'Non è stato inserito ancora nessun genere'"></h2>
                 </div>
             </div>
     </div>

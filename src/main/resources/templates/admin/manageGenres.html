@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWMovie -Film</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{admin/adminindex.html :: header}"> </div>
+
+    <main>
+		<div th:if="!${genres.isEmpty()} or !${movie.genres.isEmpty()}" class="evenly-spacer margin-top">
+			
+		<div class="column"> 
+			<h1 th:text="'Generi Selezionati per '+${movie.title}">Generi Selezionati Film</h1>
+			<div class="artist-box" th:each="genre: ${movie.genres}">
+				<a class="link" th:href="@{'/admin/removeGenre'+ '/' + ${genre.id} + '/' + ${movie.id}}">
+				   <h3 th:text="${genre.name}">Nome</h3>
+                </a>
+			</div>
+		</div>
+		
+		<div class="column">
+			<h1 th:text="'Generi Disponibili per '+${movie.title}">Generi Disponibili Film</h1>
+			<div class="artist-box" th:each="genre: ${genres}">
+				<a class="link" th:href="@{'/admin/addGenre'+ '/' + ${genre.id} + '/' + ${movie.id}}">
+				   <h3 th:text="${genre.name} " >Nome</h3>
+                </a>
+			</div>
+		</div>
+		
+		</div>
+
+		<div th:if="${genres.isEmpty()} and ${movie.genres.isEmpty()}" style="display: flex; justify-content: center; margin-top:2%;">
+			<h1>Non ci sono ancora generi nel sistema, Aggiungili!</h1>
+		</div>
+		
+		<div style="display: flex; justify-content: center; margin-top: 5%;">
+			<a th:href="@{'/admin/manageMovies' + '/' + ${movie.id}}" >
+		       <button class="submit" style="background-color: #1f2a8a;">Conferma</button>
+		    </a>
+		</div>
+	</main>
+
+</body>
+</html>

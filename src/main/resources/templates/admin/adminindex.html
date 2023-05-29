@@ -32,6 +32,15 @@
             </div>
 
             <div class="dropdown">
+                <p>Generi</p>
+                <div class="dropdown-content">
+                    <a th:href="@{/admin/formNewGenre}">Nuovo Genere</a>
+                    <a th:href="@{/genres}">Tutti i Generi</a>
+                    <a th:href="@{/admin/deleteGenres}">Rimuovi Generi</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
                 <p>Gestione</p>
                 <div class="dropdown-content">
                     <a th:href="@{/admin/manageMovies}">Gestisci Film</a>
@@ -39,14 +48,17 @@
                 </div>
             </div>
 
-            <div class="dropdown">
-                <p sec:authentication="name">nomeUtente:</p>
-                <div class="dropdown-content">
-                    <a th:href="@{/login}">Login</a>
-                    <a th:href="@{/logout}">LogOut</a>
-                    <a th:href="@{/formNewUser}">Nuovo Utente</a>
-                </div>
+            <div style="display: flex; align-items: center;">
+                <img th:src="@{/pngs/user.png}" style="max-width: 48px; max-height: 48px;">
 
+                <div class="dropdown">
+                    <p sec:authentication="name">nomeUtente:</p>
+                    <div class="dropdown-content">
+                        <a th:href="@{/login}">Login</a>
+                        <a th:href="@{/logout}">LogOut</a>
+                        <a th:href="@{/formNewUser}">Nuovo Utente</a>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>

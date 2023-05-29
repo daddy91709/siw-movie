@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwMovie -Aggiungi un Genere</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{admin/adminindex.html :: header}"> </div>
+
+    <main class="evenly-spacer margin-top">
+        <form method="POST" th:action="@{/admin/addGenre}" th:object="${genre}" class="box">
+            <h2 class="title">Inserisci un Genere</h2>
+            <div class="input-content">
+                <input type="text" placeholder="Nome del genere" class="form-input" th:field="${genre.name}">
+                <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+            <div>
+                <input type="submit" class="submit">
+                <div th:if="${#fields.hasGlobalErrors()}" style="margin-top: 20%;">
+                    <h3 class="error" th:each="err:${#fields.globalErrors()}" th:text="${err}">Errore</h3>
+                </div>
+            </div>
+        </form>
+    </main>
+
+</body>
+
+</html>

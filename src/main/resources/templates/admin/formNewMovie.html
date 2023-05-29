@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div>
-                <input type="submit" class="submit" th:href="@{/index}">
+                <input type="submit" class="submit">
                 <div th:if="${#fields.hasGlobalErrors()}">
                    <h3 class="error" th:each="err:${#fields.globalErrors()}" th:text="${err}">Errore</h3>
                 </div>

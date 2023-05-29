@@ -29,16 +29,27 @@
                 </div>
             </div>
 
-              <div class="dropdown">
-                <p sec:authentication="name">nomeUtente:</p>
+            <div class="dropdown">
+                <p>Generi</p>
                 <div class="dropdown-content">
-                    <a th:href="@{/login}">Login</a>
-                    <a th:href="@{/logout}">LogOut</a>
-                    <a th:href="@{/formNewUser}">Nuovo Utente</a>
-                    <a th:href="@{/user/editReviews}">Il mio Profilo</a>
+                    <a th:href="@{/genres}">Tutti i Generi</a>
                 </div>
-            </div>  
-            
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <img th:src="@{/pngs/user.png}" style="max-width: 48px; max-height: 48px;">
+
+                <div class="dropdown">
+                    <p sec:authentication="name">nomeUtente:</p>
+                    <div class="dropdown-content">
+                        <a th:href="@{/login}">Login</a>
+                        <a th:href="@{/logout}">LogOut</a>
+                        <a th:href="@{/formNewUser}">Nuovo Utente</a>
+                        <a th:href="@{/user/editReviews}">Il mio Profilo</a>
+                    </div>
+                </div>
+            </div>
+
         </nav>
     </header>
 
@@ -50,6 +61,7 @@
         </div>
 
         <!---<div class="card-slideshow" th:each="genre: ${genres}">
+            <h2 th:text="${genre.name}"></h2>
             <div class="card-container">
                 <div class="card" th:each="movie:${genre.movies}">
                     <div class="card-img">

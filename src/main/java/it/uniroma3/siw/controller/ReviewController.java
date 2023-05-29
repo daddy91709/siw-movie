@@ -66,7 +66,7 @@ public class ReviewController {
 			
 			//rendo persistenti i cambiamenti
 			this.movieRepository.save(movie);
-			//this.reviewRepository.save(review);
+			this.reviewRepository.save(review);
 			this.userRepository.save(review.getUser());
 
 			model.addAttribute("movie", movie);
