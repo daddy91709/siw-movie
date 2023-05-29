@@ -39,14 +39,14 @@ public class ReviewController {
 	UserRepository userRepository;
 
 	@GetMapping("/user/reviewFilm/{id}")
-	public String formNewMovie(@PathVariable("id") Long id, Model model) {
+	public String formNewReview(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("movie", this.movieRepository.findById(id).get());
 		model.addAttribute("review", new Review());
-		return "/user/formNewReview.html";
+		return "user/formNewReview.html";
 	}
 
 	@PostMapping("/user/addReviewTo/{id}")
-	public String newMovie(@PathVariable("id") Long id, @Valid @ModelAttribute("review") Review review,
+	public String newReview(@PathVariable("id") Long id, @Valid @ModelAttribute("review") Review review,
 			BindingResult bindingResult, Model model) {
 				
 		Movie movie = this.movieRepository.findById(id).get();
@@ -64,8 +64,9 @@ public class ReviewController {
 			movie.getReviews().add(review);
 			review.getUser().getReview().add(review);
 			
-			this.reviewRepository.save(review);
+			//rendo persistenti i cambiamenti
 			this.movieRepository.save(movie);
+			//this.reviewRepository.save(review);
 			this.userRepository.save(review.getUser());
 
 			model.addAttribute("movie", movie);
@@ -73,7 +74,7 @@ public class ReviewController {
 			return "movie.html";
 		} else {
 			model.addAttribute("movie", movie);
-			return "/user/formNewReview.html";
+			return "user/formNewReview.html";
 		}
 	}
 
@@ -102,5 +103,44 @@ public class ReviewController {
 
 		this.reviewRepository.delete(review);
 		return "admin/manageMovie.html";
+	}
+	
+	@GetMapping("/user/editReviews")
+	public String editReviewsPage(Model model){
+		model.addAttribute("user", AuthConfiguration.getCurrentUser(credentialsService));
+		return "user/editReviews";
+	}
+
+	@GetMapping("/user/editReview/{reviewId}")
+	public String editTReview(@PathVariable("reviewId") Long reviewId, Model model) {
+		Review review = this.reviewRepository.findById(reviewId).get();
+
+		model.addAttribute("movie", review.getMovie());
+		model.addAttribute("review", review);
+		return "user/formEditReview.html";
+	}
+
+	@PostMapping("/user/editReview/{id}")
+	public String saveReviewChanges(@PathVariable("id") Long id, @Valid @ModelAttribute Review newreview,
+			BindingResult bindingResult, Model model) {
+
+		this.reviewValidator.validate(newreview, bindingResult);
+		Review review = this.reviewRepository.findById(id).get();
+
+		if (!bindingResult.hasErrors()) {
+			
+			review.setTitle(newreview.getTitle());
+			review.setValutation(newreview.getValutation());
+			review.setContent(newreview.getContent());
+
+			this.reviewRepository.save(review);
+
+			model.addAttribute("user", review.getUser());
+
+			return "user/editReviews.html";
+		} else {
+			model.addAttribute("movie", review.getMovie());
+			return "user/formEditReview.html";
+		}
 	}
 }

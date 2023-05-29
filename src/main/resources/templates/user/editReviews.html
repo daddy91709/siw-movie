@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWMovie -Il mio Profilo</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{index.html :: header}"> </div>
+
+    <main class="column margin-top" style="margin-top: 2%;">
+
+        <div class="movie-reviews-banner" style="height: 500px;">
+            <h2 style="margin-left: 20px" th:text="'Nome Utente: ' + ${user.name} + ' ' + ${user.surname} + ' ○ Le mie Recensioni:'">Recensioni</h2>
+            <div style="display: flex; justify-content: flex-end;">
+            </div>
+            <div class="review-container" style="height: 400px;">
+                <div class="review-content" th:each="review: ${user.review}">
+                    <h2
+                        th:text="'Titolo: ' + ${review.title} +' ○ Valutazione: '+ ${review.valutation} +'/5'">
+                    </h2>
+                    <progress max="5" th:value="${review.valutation}" class="valutation-bar"></progress>
+                    <a th:href="@{'/user/editReview/'+${review.id}}" class="link" style="margin-left: 10%;"><h2>Modifica Recensione</h2></a>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+</body>
+
+</html>

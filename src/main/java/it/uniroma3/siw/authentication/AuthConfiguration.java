@@ -44,9 +44,9 @@ public class AuthConfiguration {
                 .permitAll()
                 .requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(ADMIN_ROLE)
                 .requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(ADMIN_ROLE)
-                .requestMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority(DEFAULT_ROLE)
-                .requestMatchers(HttpMethod.POST, "/user/**").hasAnyAuthority(DEFAULT_ROLE)
-                .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority(ADMIN_ROLE,DEFAULT_ROLE)
+                .requestMatchers(HttpMethod.POST, "/user/**").hasAnyAuthority(ADMIN_ROLE,DEFAULT_ROLE)
+                .anyRequest().permitAll()
                 .and().exceptionHandling().accessDeniedPage("/login")
 
                 .and().formLogin()

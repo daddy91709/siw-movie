@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWMovie -Artista</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{admin/adminindex.html :: header}"> </div>
+
+    <main class="evenly-spacer margin-top">
+        <div class="box">
+            <h2 class="title" th:text="${artist.name} + ' ' + ${artist.surname}">Nome</h2>
+            <div class="box-content">
+                <div class="column">
+                    <div class="film-img">
+                        <img th:src="${artist.urlImage}">
+                    </div>
+                    <h3 th:text=" 'Età: ' + ${artist.age}">età</h3> 
+                </div>
+                <div id="manage-options" class="column" style="justify-content: space-evenly; height: 300px; margin-left: 20px;">
+                    <a th:href="@{'/admin/editArtist/'+${artist.id}}">
+                        <img th:src="@{/pngs/edit.png}" style="width: 40px; height: 40px;">
+                    </a>
+                    <a th:href="@{'/admin/deleteArtist/'+${artist.id}}">
+                        <img th:src="@{/svgs/bin.svg}" style="width: 40px; height: 40px;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

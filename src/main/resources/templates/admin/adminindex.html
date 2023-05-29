@@ -36,15 +36,19 @@
                 <p>Gestione</p>
                 <div class="dropdown-content">
                     <a th:href="@{/admin/manageMovies}">Gestisci Film</a>
-                    <a th:href="@{/formNewUser}">Nuovo Utente</a>
-                    <a th:href="@{/login}">Login</a>
+                    <a th:href="@{/admin/manageArtists}">Gestisci Artisti</a>
                 </div>
             </div>
 
-            <a class="dropdown" th:href="@{/logout}" style="display: flex; width: fit-content;">
+            <div class="dropdown">
                 <p sec:authentication="name">nomeUtente:</p>
-                <p th:text="': LogOut'"></p>
-            </a>
+                <div class="dropdown-content">
+                    <a th:href="@{/login}">Login</a>
+                    <a th:href="@{/logout}">LogOut</a>
+                    <a th:href="@{/formNewUser}">Nuovo Utente</a>
+                </div>
+
+            </div>
         </nav>
     </header>
 

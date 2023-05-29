@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwMovie -Modifica Recensione Film</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+
+<body class="background">
+
+    <div th:insert="~{index.html :: header}"> </div>
+
+    <main class="column" style="margin-top: 2%;">
+        <div th:insert="~{movie.html :: movie-banner}" style="width:100%;" class="column"></div>
+
+        <form method="POST" th:action="@{/user/editReview/{id}(id=${review.id})}" th:object="${review}"
+            class="movie-reviews-banner">
+
+            <div style="display: flex; margin-top:2%" id="title-and-valutation">
+
+                <div class="column" style="margin-left: 5%;">
+                    <div style="display: flex; align-items: center;">
+                        <h2>Titolo:</h2>
+                        <input type="text" placeholder="Titolo" class="form-input" style="width: 200px"
+                            th:field="${review.title}">
+                    </div>
+                    <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+                </div>
+
+                <div class="column" style="margin-left: 10%;">
+                    <div style="display: flex; align-items: center;">
+                        <h2 th:text="'Numero di Stelle: '">Numero Di Stelle:</h2>
+                        <input type="radio" name="valutation" value="1" th:checked="${review.valutation == 1}">
+                        <h2>1</h2>
+                        <input type="radio" name="valutation" value="2" th:checked="${review.valutation == 2}">
+                        <h2>2</h2>
+                        <input type="radio" name="valutation" value="3" th:checked="${review.valutation == 3}">
+                        <h2>3</h2>
+                        <input type="radio" name="valutation" value="4" th:checked="${review.valutation == 4}">
+                        <h2>4</h2>
+                        <input type="radio" name="valutation" value="5" th:checked="${review.valutation == 5}">
+                        <h2>5</h2>
+                    </div>
+                    <span class="error" th:if="${#fields.hasErrors('valutation')}" th:errors="*{valutation}"></span>
+                </div>
+
+            </div>
+
+            <div style="display: flex;margin-left: 5%; margin-top: 2%; align-items:center;">
+                <div class="column" style="width: 70%">
+                    <input type="text" placeholder="Contenuto" class="form-input"
+                        style="height: 160px; width:100%; margin: 0px 3% 0px 3%; font-size: large;" th:field="${review.content}">
+                    <span class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+                </div>
+
+                <div class="column" style="margin-left:2%;">
+                    <input type="submit" class="submit">
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <h3 class="error" th:each="err:${#fields.globalErrors()}" th:text="${err}">Errore</h3>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+</body>
+
+</html>

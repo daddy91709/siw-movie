@@ -1,7 +1,5 @@
 package it.uniroma3.siw.validator;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -18,8 +16,8 @@ public class ArtistValidator implements Validator{
 	  @Override
 	  public void validate(Object o, Errors errors) {
 		Artist artist = (Artist)o;
-	    if (artist.getName()!=null && artist.getSurname()!=null
-			&& artistRepository.existsByNameAndSurname(artist.getName(), artist.getSurname())) {
+	    if (artist.getName()!=null && artist.getSurname()!=null && artist.getAge()!=null
+			&& artistRepository.existsByNameAndSurnameAndAge(artist.getName(), artist.getSurname(), artist.getAge())) {
 	      errors.reject("artist.duplicate");
 	    }
 	   }

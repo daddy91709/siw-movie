@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw.model.Artist;
+import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.repository.ArtistRepository;
 import it.uniroma3.siw.repository.MovieRepository;
 import it.uniroma3.siw.validator.ArtistValidator;
@@ -61,4 +62,60 @@ public class ArtistController {
         return "artist.html";
     }
 
+    @GetMapping("/admin/deleteArtist/{id}")
+	public String deleteMovie(Model model, @PathVariable("id") Long id) {
+		Artist artist = this.artistRepository.findById(id).get();
+
+        for(Movie movie: artist.getDirectedMovies()){
+            movie.setDirector(null);
+        }
+        
+        this.artistRepository.delete(artist);
+
+		model.addAttribute("artists", this.artistRepository.findAll());
+		return "admin/manageArtists.html";
+	}
+
+    @GetMapping("/admin/manageArtists")
+    public String toManageArtists(Model model) {
+		model.addAttribute("artists", this.artistRepository.findAll());
+		return "admin/manageArtists.html";
+	}
+
+    @GetMapping("/admin/manageArtist/{id}")
+    public String manageArtist(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("artist", this.artistRepository.findById(id).get());
+		return "admin/manageArtist.html";
+	}
+
+    @GetMapping("/admin/editArtist/{id}")
+	public String editArtist(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("artist", this.artistRepository.findById(id).get());
+		return "admin/formEditArtist.html";
+	}
+
+    @PostMapping("/admin/editArtist/{id}")
+	public String saveArtistChanges(@PathVariable("id") Long id, @Valid @ModelAttribute Artist newartist,
+			BindingResult bindingResult, Model model) {
+
+		this.artistValidator.validate(newartist, bindingResult);
+
+		if (!bindingResult.hasErrors()) {
+			Artist artist = this.artistRepository.findById(id).get();
+
+			artist.setName(newartist.getName());
+			artist.setSurname(newartist.getSurname());
+            artist.setAge(newartist.getAge());
+			artist.setUrlImage(newartist.getUrlImage());
+
+			this.artistRepository.save(artist);
+
+			model.addAttribute("artist", artist);
+
+			return "/admin/manageArtist.html";
+		} else {
+			model.addAttribute("artist", this.artistRepository.findById(id).get());
+			return "/admin/formEditArtist.html";
+		}
+	}
 }
