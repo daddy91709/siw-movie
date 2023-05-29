@@ -19,9 +19,10 @@
             <div class="box-content">
                 <div class="column">
                     <div class="film-img">
-                        <img th:src="${artist.urlImage}">
+                        <img th:src="@{'data:image;base64,' + ${artist.imageString}}">
                     </div>
-                    <h3 th:text=" 'Età: ' + ${artist.age}">età</h3> 
+                    <h3 th:text=" 'Data di nascita: ' + ${artist.birthDate}">età</h3>
+                    <h3 th:if="${artist.deathDate}" th:text=" 'Data di morte: ' + ${artist.deathDate}">età</h3> 
                 </div>
             </div>
         </div>

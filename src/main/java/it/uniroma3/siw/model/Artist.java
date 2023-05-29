@@ -1,8 +1,10 @@
 package it.uniroma3.siw.model;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,9 +23,13 @@ public class Artist {
     private String name;
 	@NotBlank
     private String surname;
-	@NotBlank
-    private String age;
-    private String urlImage;
+	
+	@NotNull @PastOrPresent
+    private LocalDate birthDate;
+	private LocalDate deathDate;
+
+	@Column(length = 100000000)//max 10Mb
+	private String imageString;
     
     @ManyToMany
     private List<Movie> movies;
@@ -49,17 +55,24 @@ public class Artist {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public String getAge() {
-		return age;
+	
+	public LocalDate getBirthDate() {
+		return birthDate;
 	}
-	public void setAge(String age) {
-		this.age = age;
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
 	}
-	public String getUrlImage() {
-		return urlImage;
+	public LocalDate getDeathDate() {
+		return deathDate;
 	}
-	public void setUrlImage(String urlImage) {
-		this.urlImage = urlImage;
+	public void setDeathDate(LocalDate deathDate) {
+		this.deathDate = deathDate;
+	}
+	public String getImageString() {
+		return imageString;
+	}
+	public void setImageString(String imageString) {
+		this.imageString = imageString;
 	}
 	
 	@Override

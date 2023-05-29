@@ -14,7 +14,7 @@
     <div th:insert="~{admin/adminindex.html :: header}"> </div>
 
     <main class="evenly-spacer margin-top">
-        <form method="POST" th:action="@{/admin/addArtist}" th:object="${artist}" class="box">
+        <form method="POST" th:action="@{/admin/addArtist}" th:object="${artist}" class="box" enctype="multipart/form-data">
             <h2 class="title">Inserisci un Artista</h2>
             <div class="input-content">
                 <input type="text" placeholder="Nome dell'Artista" class="form-input" th:field="${artist.name}">
@@ -23,10 +23,14 @@
                 <input type="text" placeholder="Cognome dell'Artista" class="form-input" th:field="${artist.surname}">
                 <span class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
 
-                <input type="text" placeholder="Età dell'Artista" class="form-input" th:field="${artist.age}">
-                <span class="error" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
+                <input type="date" placeholder="Data di Nascita" class="form-input" th:field="${artist.birthDate}">
+                <span class="error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></span>
 
-                <input type="url" placeholder="URL dell'immagine" class="form-input" th:field="${artist.urlImage}">
+                <input type="date" placeholder="Data di Morte" class="form-input" th:field="${artist.deathDate}">
+
+                <div class="file-input form-input column">
+                    <input type="file" th:name="image" accept="/image*">
+                </div>
             </div>
             <div>
                 <input type="submit" class="submit" th:href="@{/index}">

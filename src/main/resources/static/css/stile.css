@@ -200,6 +200,12 @@ nav {
     translate: 5%;
 }
 
+.file-input{
+    /*rispetto al form-input cambia il bordo e l'altezza*/
+    border: dashed grey 2px; 
+    height: 70px;
+}
+
 .submit {
     /*font*/
     font-family: monospace;

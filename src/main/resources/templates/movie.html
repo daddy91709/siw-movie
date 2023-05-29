@@ -17,7 +17,7 @@
 
         <div th:fragment="movie-banner" class="movie-banner">
             <div id="movie-image" class="column" style="height:100%; width:40%;">
-                <img th:src="${movie.urlImage}" style="height: 300px; width: 220px;margin: 10px 10px 10px 30px;">
+                <img th:src="@{'data:image;base64,' + ${movie.imageString}}" style="height: 300px; width: 220px;margin: 10px 10px 10px 30px;">
             </div>
             <div id="movie-info" style="height:100%; width:60%;">
                 <div>

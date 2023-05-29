@@ -27,7 +27,7 @@
                 <div class="card"  th:each="movie:${movies}">
                     <div class="card-img">
                         <img
-                            th:src="${movie.urlImage}">
+                        th:src="@{'data:image;base64,' + ${movie.imageString}}">
                     </div>
                     <div class="card-info">
                         <a th:href="@{'/admin/manageMovies' + '/' + ${movie.id}}" class="link" >

@@ -1,5 +1,8 @@
 package it.uniroma3.siw.controller;
 
+import java.io.IOException;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Artist;
 import it.uniroma3.siw.model.Movie;
@@ -108,9 +112,15 @@ public class MovieController {
 	}
 
 	@PostMapping("/admin/movies")
-	public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, Model model) {
+	public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, MultipartFile image, Model model) {
 		this.movieValidator.validate(movie, bindingResult);
 		if (!bindingResult.hasErrors()) {
+
+			try {
+                String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+                movie.setImageString(base64Image);
+            } catch (IOException e) {}
+
 			this.movieRepository.save(movie);
 			model.addAttribute("movie", movie);
 			return "/admin/manageMovie.html";
@@ -164,7 +174,7 @@ public class MovieController {
 
 	@PostMapping("/admin/editMovie/{id}")
 	public String saveMovieChanges(@PathVariable("id") Long id, @Valid @ModelAttribute Movie newmovie,
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult, MultipartFile image, Model model) {
 
 		this.movieValidator.validate(newmovie, bindingResult);
 
@@ -173,7 +183,11 @@ public class MovieController {
 
 			movie.setTitle(newmovie.getTitle());
 			movie.setYear(newmovie.getYear());
-			movie.setUrlImage(newmovie.getUrlImage());
+
+			try {
+                String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+                movie.setImageString(base64Image);
+            } catch (IOException e) {}
 
 			this.movieRepository.save(movie);
 

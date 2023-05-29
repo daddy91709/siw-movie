@@ -16,8 +16,8 @@ public class ArtistValidator implements Validator{
 	  @Override
 	  public void validate(Object o, Errors errors) {
 		Artist artist = (Artist)o;
-	    if (artist.getName()!=null && artist.getSurname()!=null && artist.getAge()!=null
-			&& artistRepository.existsByNameAndSurnameAndAge(artist.getName(), artist.getSurname(), artist.getAge())) {
+	    if (artist.getName()!=null && artist.getSurname()!=null && artist.getBirthDate()!=null
+			&& artistRepository.existsByNameAndSurnameAndBirthDate(artist.getName(), artist.getSurname(), artist.getBirthDate())) {
 	      errors.reject("artist.duplicate");
 	    }
 	   }

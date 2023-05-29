@@ -19,7 +19,7 @@
             <div class="box-content">
                 <div class="column">
                     <div class="film-img">
-                        <img th:src="${artist.urlImage}">
+                        <img th:src="@{'data:image;base64,' + ${artist.imageString}}">
                     </div>
                     <h3 th:text=" 'Età: ' + ${artist.age}">età</h3> 
                 </div>

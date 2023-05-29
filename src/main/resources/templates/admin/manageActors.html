@@ -22,7 +22,7 @@
 				<a class="link" th:href="@{'/admin/removeActor'+ '/' + ${artist.id} + '/' + ${movie.id}}">
 				   <h3 th:text="${artist.name} + ' ' + ${artist.surname}" >Nome Cognome</h3>
                 </a>
-                <img th:src="${artist.urlImage}">
+                <img th:src="@{'data:image;base64,' + ${artist.imageString}}">
 			</div>
 		</div>
 		
@@ -32,7 +32,7 @@
 				<a class="link" th:href="@{'/admin/addActor'+ '/' + ${artist.id} + '/' + ${movie.id}}">
 				   <h3 th:text="${artist.name} + ' ' + ${artist.surname}" >Nome Cognome</h3>
                 </a>
-				<img th:src="${artist.urlImage}">
+				<img th:src="@{'data:image;base64,' + ${artist.imageString}}">
 			</div>
 		</div>
 		

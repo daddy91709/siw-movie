@@ -14,7 +14,7 @@
     <div th:insert="~{admin/adminindex.html :: header}"> </div>
 
     <main class="evenly-spacer margin-top">
-        <form method="POST" th:action="@{/admin/editMovie/{id}(id=${movie.id})}" th:object="${movie}" class="box">
+        <form method="POST" th:action="@{/admin/editMovie/{id}(id=${movie.id})}" th:object="${movie}" class="box" enctype="multipart/form-data">
             <h2 class="title" th:text="'Modifica ' + ${movie.title}">Modifica Film</h2>
             <div class="input-content">
                 <input type="text" placeholder="Nuovo Titolo" class="form-input" th:field="${movie.title}">
@@ -23,7 +23,9 @@
                 <input type="text" placeholder="Nuovo Anno" class="form-input" th:field="${movie.year}">
                 <span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
                 
-                <input type="url" placeholder="Nuovo URL" class="form-input" th:field="${movie.urlImage}">
+                <div class="file-input form-input column">
+                    <input type="file" th:name="image" accept="/image*">
+                </div>
             </div>
             <div>
                 <input type="submit" class="submit" th:href="@{/index}">

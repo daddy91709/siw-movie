@@ -67,7 +67,7 @@ public class AuthenticationController {
             UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
             if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-                return "admin/aminindex.html";
+                return "admin/adminindex.html";
             }
         }
         return "index.html";

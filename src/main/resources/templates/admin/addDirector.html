@@ -13,7 +13,7 @@
 
     <div th:insert="~{admin/adminindex.html :: header}"> </div>
 
-    <main class="evenly-spacer margin-top">
+    <main class="column">
 
         <div class="title-div" th:if="${directors.isEmpty()}">
             <h1 class="title">Non ci sono Artisti nel sistema</h1>
@@ -27,7 +27,7 @@
                 <div class="card" th:each="director : ${directors}">
                     <div class="card-img">
                         <img
-                            th:src="${director.urlImage}">
+                        th:src="@{'data:image;base64,' + ${director.imageString}}">
                     </div>
                     <div class="card-info">
                         <a th:href="@{'/admin/setDirector/' + ${movie.id} + '/' + ${director.id}}" class="link" th:text="${director.name} + ' ' + ${director.surname} "><h2>Info</h2></a>
