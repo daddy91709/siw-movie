@@ -53,28 +53,30 @@
         </nav>
     </header>
 
-    <main class="evenly-spacer margin-top">
+    <main class="column margin-top">
         <div class="box">
             <h2 class="title">Benvenuto!</h2>
             <h3 class="description">In SIWMovie potrai visualizzare e gestire una raccolta di film e Artisti, e scoprire
                 le ultime news dal mondo del cinema!</h3>
         </div>
 
-        <!---<div class="card-slideshow" th:each="genre: ${genres}">
-            <h2 th:text="${genre.name}"></h2>
-            <div class="card-container">
-                <div class="card" th:each="movie:${genre.movies}">
-                    <div class="card-img">
-                        <img th:src="${movie.urlImage}">
-                    </div>
-                    <div class="card-info">
-                        <a th:href="@{'/movies' + '/' + ${movie.id} }" class="link">
-                            <h3 th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</h3>
-                        </a>
+        <div class="genres-slideshow">
+            <div class="card-slideshow" th:each="genre: ${genres}">
+                <h2 th:text="${genre.name}"></h2>
+                <div class="card-container">
+                    <div class="card" th:each="movie:${genre.movies}">
+                        <div class="card-img">
+                            <img th:src="@{'data:image;base64,' + ${movie.imageString}}">
+                        </div>
+                        <div class="card-info">
+                            <a th:href="@{'/movies' + '/' + ${movie.id} }" class="link">
+                                <h3 th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</h3>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>-->
+        </div>
 
 </body>
 

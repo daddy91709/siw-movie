@@ -135,7 +135,9 @@ public class MovieController {
 
 	@GetMapping("/movies/{id}")
 	public String getMovie(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", this.movieRepository.findById(id).get());
+		Movie movie = this.movieRepository.findById(id).get();
+		model.addAttribute("movie", movie);
+		model.addAttribute("rating", this.reviewRepository.findValutationAvgByMovie(movie));
 		return "movie.html";
 	}
 

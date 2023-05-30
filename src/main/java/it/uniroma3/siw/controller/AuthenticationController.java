@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.repository.GenreRepository;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.UserService;
 import it.uniroma3.siw.validator.UserValidator;
@@ -28,6 +29,14 @@ public class AuthenticationController {
     private UserService userService;
     @Autowired
     private UserValidator userValidator;
+    @Autowired
+    private GenreRepository genreRepository;
+
+    @GetMapping("/")
+    public String indexPage(Model model){
+        model.addAttribute("genres", this.genreRepository.findAll());
+        return "index.html";
+    }
 
     @GetMapping("/login")
     public String toLoginPage() {

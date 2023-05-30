@@ -52,7 +52,11 @@
             </div>
     </div>
         <div class="movie-reviews-banner">
-            <h2 style="margin-left: 20px">Recensioni</h2>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 35%;">
+                <h2 style="margin-left: 20px">Recensioni</h2>
+                <h2 th:if="${rating} != null" th:text="'Valutazione Media: '+${rating}+'/5'">Valutazione Media</h2>
+                <progress th:if="${rating} != null" class="valutation-bar" th:value="${rating}" max="5"></progress>
+            </div>
             <div style="display: flex; justify-content: flex-end;">
                 <a style="margin: 10px 50px 10px 10px; height: 50px; width:max-content; display: flex; align-items: center" class="submit link" th:href="@{'/user/reviewFilm/' + ${movie.id}}">Aggiungi una Recensione</a>
             </div>
