@@ -14,25 +14,20 @@
     <div th:insert="~{index.html :: header}"> </div>
 
     <main>
-
-        <div class="title-div" th:if="${artists.isEmpty()}">
-            <h1 class="title">Non ci sono Artisti nel sistema</h1>
-        </div>
-        <div class="title-div" th:unless="${artists.isEmpty()}">
-            <h1 class="title">Tutti gli Artisti</h1>
-        </div>
-
-        <div class="card-slideshow">
+        <div class="card-slideshow small-margin-top">
+            <div class="title-div">
+                <h1 th:if="${artists.isEmpty()}" class="title">Non ci sono Artisti nel sistema</h1>
+                <h1 th:unless="${artists.isEmpty()}" class="title">Tutti gli Artisti</h1>
+            </div>
             <div class="card-container">
                 <div class="card" th:each="artist : ${artists}">
                     <div class="card-img">
-                        <img
-                        th:src="@{'data:image;base64,' + ${artist.imageString}}">
+                        <img th:src="@{'data:image;base64,' + ${artist.imageString}}">
                     </div>
                     <div class="card-info">
                         <a th:href="@{'/artists' + '/' + ${artist.id}}" class="link">
-							<h3 th:text="${artist.name} + ' ' + ${artist.surname}">Info</h3>
-						</a>
+                            <h3 th:text="${artist.name} + ' ' + ${artist.surname}">Info</h3>
+                        </a>
                     </div>
                 </div>
             </div>

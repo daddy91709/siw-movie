@@ -38,7 +38,7 @@ public class GenreController {
 
         if (!bindingResult.hasErrors()) {
             this.genreRepository.save(genre);
-            model.addAttribute("genre", genre);
+            model.addAttribute("genres", this.genreRepository.findAll());
             return "index.html";
         } else {
             return "admin/formNewGenre.html";

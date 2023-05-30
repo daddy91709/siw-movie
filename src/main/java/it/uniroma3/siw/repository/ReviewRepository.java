@@ -17,4 +17,8 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
 
     @Query("SELECT AVG(r.valutation) FROM Review r WHERE r.movie = :movie")
     public Float findValutationAvgByMovie(@Param("movie") Movie movie);
+
+    //@Query("SELECT r.movie FROM Review r GROUP BY r.movie ORDER BY AVG(r.valutation) DESC")
+    //public List<Movie> findTopRatedMovies();
+
 }

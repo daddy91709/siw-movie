@@ -15,14 +15,11 @@
 
     <main>
 
-        <div class="title-div" th:if="${movies.isEmpty()}">
-            <h1 class="title">Non ci sono Film nel sistema</h1>
-        </div>
-        <div class="title-div" th:unless="${movies.isEmpty()}">
-            <h1 class="title">Gestisci i Film</h1>
-        </div>
-
-        <div class="card-slideshow">
+        <div class="card-slideshow small-margin-top">
+            <div class="title-div">
+                <h1 class="title" th:if="${movies.isEmpty()}">Non ci sono Film nel sistema</h1>
+                <h1 class="title" th:unless="${movies.isEmpty()}">Gestisci i Film</h1>
+            </div>
             <div class="card-container">
                 <div class="card"  th:each="movie:${movies}">
                     <div class="card-img">

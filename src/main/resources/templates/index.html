@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <div style="display: flex; align-items: center;">
+            <div style="display: flex; align-items: center;  margin-left: 100px;">
                 <img th:src="@{/pngs/user.png}" style="max-width: 48px; max-height: 48px;">
 
                 <div class="dropdown">
@@ -53,17 +53,27 @@
         </nav>
     </header>
 
-    <main class="column margin-top">
-        <div class="box">
-            <h2 class="title">Benvenuto!</h2>
-            <h3 class="description">In SIWMovie potrai visualizzare e gestire una raccolta di film e Artisti, e scoprire
-                le ultime news dal mondo del cinema!</h3>
-        </div>
+    <main class="small-margin-top column">
+            <div class="card-slideshow">
+                <h1 th:text="'I Film più amati'"></h1>
+                <div class="card-container" style="background-color: #0000005f;">
+                    <div class="card" th:each="movie:${topMovies}">
+                        <div class="card-img">
+                            <img th:src="@{'data:image;base64,' + ${movie.imageString}}">
+                        </div>
+                        <div class="card-info">
+                            <a th:href="@{'/movies' + '/' + ${movie.id} }" class="link">
+                                <h3 th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</h3>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="genres-slideshow">
-            <div class="card-slideshow" th:each="genre: ${genres}">
-                <h2 th:text="${genre.name}"></h2>
-                <div class="card-container">
+        <div th:fragment="movie-genres-slideshow" class="genres-slideshow">
+            <div class="card-slideshow" th:each="genre: ${genres}" th:if="!${genre.movies.isEmpty}" style="margin-bottom: 2%;">
+                <h1 th:text="'I migliori film di '+${genre.name}"></h1>
+                <div class="card-container" style="background-color: #0000005f;">
                     <div class="card" th:each="movie:${genre.movies}">
                         <div class="card-img">
                             <img th:src="@{'data:image;base64,' + ${movie.imageString}}">
@@ -78,6 +88,6 @@
             </div>
         </div>
 
+    </main>
 </body>
-
 </html>

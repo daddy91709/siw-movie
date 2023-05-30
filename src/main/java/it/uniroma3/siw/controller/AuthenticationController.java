@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.GenreRepository;
+import it.uniroma3.siw.repository.ReviewRepository;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.UserService;
 import it.uniroma3.siw.validator.UserValidator;
@@ -31,6 +32,8 @@ public class AuthenticationController {
     private UserValidator userValidator;
     @Autowired
     private GenreRepository genreRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @GetMapping("/")
     public String indexPage(Model model){
@@ -60,7 +63,7 @@ public class AuthenticationController {
             user.getCredentials().setUser(user);
             userService.saveUser(user);
 
-            model.addAttribute("user", user);
+            model.addAttribute("genres", this.genreRepository.findAll());
             return "index.html";
         }
         return "formNewUser.html";
@@ -69,6 +72,9 @@ public class AuthenticationController {
     @GetMapping(value = "/index")
     public String index(Model model) {
         org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("genres", this.genreRepository.findAll());
+        //model.addAttribute("topMovies", this.reviewRepository.findTopRatedMovies());
+
         if (authentication instanceof AnonymousAuthenticationToken) {
             return "index.html";
         }
@@ -89,9 +95,11 @@ public class AuthenticationController {
         Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
         if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
             // carica la pagina admin
+            model.addAttribute("genres", this.genreRepository.findAll());
             return "admin/adminindex.html";
         } else if (credentials.getRole().equals(Credentials.DEFAULT_ROLE)) {
             // carica la pagina utente autenticato
+            model.addAttribute("genres", this.genreRepository.findAll());
             return "index.html";
         }
         return "login.html";

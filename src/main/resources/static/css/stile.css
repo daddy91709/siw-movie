@@ -72,7 +72,7 @@ header {
 nav {
     display: flex;
     justify-content: space-evenly;
-    width: 40%;
+    width: 82%;
     margin-left: 60px;
 }
 
@@ -180,6 +180,14 @@ nav:last-child(){
     margin-top: 10%;
 }
 
+.small-margin-top{
+    margin-top: 5%;
+}
+
+.mini-margin-top{
+    margin-top: 2%;
+}
+
 /*form*/
 .input-content {
     display: contents;
@@ -248,7 +256,6 @@ nav:last-child(){
 }
 
 .card-container{
-    margin-top: 12%;
     display: flex;
 }
 
@@ -319,6 +326,7 @@ a.link{ /*link a che devono essere mostrati come normali h*/
     display: flex;
     align-items: top;
     justify-content: center;
+    width: 100%;
 }
 
 .title {
