@@ -21,9 +21,9 @@
                     <div class="film-img">
                         <img th:src="@{'data:image;base64,' + ${artist.imageString}}">
                     </div>
-                    <h3 th:text=" 'Età: ' + ${artist.age}">età</h3> 
                 </div>
-                <div id="manage-options" class="column" style="justify-content: space-evenly; height: 300px; margin-left: 20px;">
+                <div id="manage-options" class="column"
+                    style="justify-content: space-evenly; height: 300px; margin-left: 20px;">
                     <a th:href="@{'/admin/editArtist/'+${artist.id}}">
                         <img th:src="@{/pngs/edit.png}" style="width: 40px; height: 40px;">
                     </a>
@@ -32,8 +32,13 @@
                     </a>
                 </div>
             </div>
+            <div style="display: flex; width: 500px; justify-content: space-around;">
+                <h3 th:text=" 'Data di nascita: ' + ${artist.birthDate}">età</h3>
+                <h3 th:if="${artist.deathDate}" th:text=" 'Data di morte: ' + ${artist.deathDate}">età</h3>
+            </div>
         </div>
     </main>
 
 </body>
+
 </html>

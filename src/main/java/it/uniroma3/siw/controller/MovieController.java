@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import ch.qos.logback.core.joran.conditional.ElseAction;
 import it.uniroma3.siw.model.Artist;
 import it.uniroma3.siw.model.Genre;
 import it.uniroma3.siw.model.Movie;
@@ -116,14 +117,16 @@ public class MovieController {
 	}
 
 	@PostMapping("/admin/movies")
-	public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, MultipartFile image, Model model) {
+	public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+			MultipartFile image, Model model) {
 		this.movieValidator.validate(movie, bindingResult);
 		if (!bindingResult.hasErrors()) {
 
 			try {
-                String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
-                movie.setImageString(base64Image);
-            } catch (IOException e) {}
+				String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+				movie.setImageString(base64Image);
+			} catch (IOException e) {
+			}
 
 			this.movieRepository.save(movie);
 			model.addAttribute("movie", movie);
@@ -190,25 +193,31 @@ public class MovieController {
 	public String saveMovieChanges(@PathVariable("id") Long id, @Valid @ModelAttribute Movie newmovie,
 			BindingResult bindingResult, MultipartFile image, Model model) {
 
+		// valida i nuovi dati per verificare che non ci siano stringhe nulle
 		this.movieValidator.validate(newmovie, bindingResult);
 
-		if (!bindingResult.hasErrors()) {
+		// se non ci sono errori di campo salva i nuovi dati
+		if (!bindingResult.hasFieldErrors()) {
 			Movie movie = this.movieRepository.findById(id).get();
-
 			movie.setTitle(newmovie.getTitle());
 			movie.setYear(newmovie.getYear());
 
+			// se è cambiata anche l'immagine aggiornala
 			try {
-                String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
-                movie.setImageString(base64Image);
-            } catch (IOException e) {}
+				if (image.getBytes().length != 0) {
+					String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+					movie.setImageString(base64Image);
+				}
+			} catch (IOException e) {
+			}
 
 			this.movieRepository.save(movie);
 
 			model.addAttribute("movie", movie);
-
 			return "/admin/manageMovie.html";
-		} else {
+		}
+		// se c'erano errori di campo allora riporta alla form con gli errori
+		else {
 			model.addAttribute("movie", this.movieRepository.findById(id).get());
 			return "/admin/formEditMovie.html";
 		}

@@ -46,7 +46,8 @@ public class ArtistController {
             try {
                 String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
                 artist.setImageString(base64Image);
-            } catch (IOException e) {}
+            } catch (IOException e) {
+            }
 
             this.artistRepository.save(artist);
             model.addAttribute("artist", artist);
@@ -110,27 +111,35 @@ public class ArtistController {
     public String saveArtistChanges(@PathVariable("id") Long id, @Valid @ModelAttribute Artist newartist,
             BindingResult bindingResult, MultipartFile image, Model model) {
 
+        // valida i nuovi dati per verificare che non ci siano stringhe nulle
         this.artistValidator.validate(newartist, bindingResult);
 
-        if (!bindingResult.hasErrors()) {
-            Artist artist = this.artistRepository.findById(id).get();
+        // se non ci sono errori di campo salva i nuovi dati
+        if (!bindingResult.hasFieldErrors()) {
 
+            Artist artist = this.artistRepository.findById(id).get();
             artist.setName(newartist.getName());
             artist.setSurname(newartist.getSurname());
-            artist.setBirthDate(newartist.getBirthDate());
-            artist.setDeathDate(newartist.getDeathDate());
             
-            try {
-                String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
-                artist.setImageString(base64Image);
-            } catch (IOException e) {}
+            artist.setBirthDate(newartist.getBirthDate()); 
+            artist.setDeathDate(newartist.getDeathDate()); 
+
+            // se è cambiata anche l'immagine aggiornala
+			try {
+				if (image.getBytes().length != 0) {
+					String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+					artist.setImageString(base64Image);
+				}
+			} catch (IOException e) {
+			}
 
             this.artistRepository.save(artist);
 
             model.addAttribute("artist", artist);
-
             return "/admin/manageArtist.html";
-        } else {
+        } 
+        // se c'erano errori di campo allora riporta alla form con gli errori
+        else {
             model.addAttribute("artist", this.artistRepository.findById(id).get());
             return "/admin/formEditArtist.html";
         }

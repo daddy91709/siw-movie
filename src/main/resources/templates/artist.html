@@ -21,12 +21,15 @@
                     <div class="film-img">
                         <img th:src="@{'data:image;base64,' + ${artist.imageString}}">
                     </div>
-                    <h3 th:text=" 'Data di nascita: ' + ${artist.birthDate}">età</h3>
-                    <h3 th:if="${artist.deathDate}" th:text=" 'Data di morte: ' + ${artist.deathDate}">età</h3> 
                 </div>
+            </div>
+            <div style="display: flex; width: 500px; justify-content: space-around;">
+                <h3 th:text=" 'Data di nascita: ' + ${artist.birthDate}">età</h3>
+                <h3 th:if="${artist.deathDate}" th:text=" 'Data di morte: ' + ${artist.deathDate}">età</h3>
             </div>
         </div>
     </main>
 
 </body>
+
 </html>
