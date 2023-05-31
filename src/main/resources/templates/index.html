@@ -54,7 +54,7 @@
     </header>
 
     <main class="small-margin-top column">
-            <div class="card-slideshow">
+            <div class="card-slideshow" th:if="${topMovies} and ${topMovies.isEmpty()}">
                 <h1 th:text="'I Film più amati'"></h1>
                 <div class="card-container" style="background-color: #0000005f;">
                     <div class="card" th:each="movie:${topMovies}">
@@ -71,7 +71,7 @@
             </div>
 
         <div th:fragment="movie-genres-slideshow" class="genres-slideshow">
-            <div class="card-slideshow" th:each="genre: ${genres}" th:if="!${genre.movies.isEmpty}" style="margin-bottom: 2%;">
+            <div class="card-slideshow" th:each="genre: ${genres}" th:if="!${genre.movies.isEmpty()}" style="margin-bottom: 2%;">
                 <h1 th:text="'I migliori film di '+${genre.name}"></h1>
                 <div class="card-container" style="background-color: #0000005f;">
                     <div class="card" th:each="movie:${genre.movies}">

@@ -14,16 +14,25 @@
     <div th:insert="~{index.html :: header}"> </div>
 
     <main class="evenly-spacer margin-top">
+
         <form method="GET" th:action="@{/searchMovies}" class="box">
             <h2 class="title">Cerca un Film per anno</h2>
             <div class="input-content">
                 <input type="text" placeholder="Anno del Film" class="form-input" th:name="year">
             </div>
             <br>
-            <div class="form-bottom">
-                <input type="submit" class="submit">
-                <h3 style="color:red" th:text="${messaggioErrore}">Errore</h3>
+            <input type="submit" class="submit">
+        </form>
+
+        <form method="GET" th:action="@{/searchMoviesByGenre}" class="box">
+            <h2 class="title">Cerca un Film per Genere</h2>
+            <div class="input-content">
+                <select class="form-input" th:name="genreId">
+                    <option th:each="genre: ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+                </select>
             </div>
+            <br>
+            <input type="submit" class="submit">
         </form>
     </main>
 

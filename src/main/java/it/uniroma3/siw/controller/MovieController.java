@@ -148,13 +148,21 @@ public class MovieController {
 	}
 
 	@GetMapping("/formSearchMovies")
-	public String formSearchMovies() {
+	public String formSearchMovies(Model model) {
+		model.addAttribute("genres", this.genreRepository.findAll());
 		return "formSearchMovies.html";
 	}
 
-	@GetMapping("/searchMovies")
-	public String searchMovies(Model model, @RequestParam Integer year) {
+	@GetMapping("/searchMoviesByYear")
+	public String searchMoviesByYear(Model model, @RequestParam Integer year) {
 		model.addAttribute("movies", this.movieRepository.findAllByYear(year));
+		return "movies.html";
+	}
+
+	@GetMapping("/searchMoviesByGenre")
+	public String searchMoviesByGenre(Model model, @RequestParam Long genreId) {
+		Genre genre = this.genreRepository.findById(genreId).get();
+		model.addAttribute("movies", this.movieRepository.findAllByGenresContains(genre));
 		return "movies.html";
 	}
 
