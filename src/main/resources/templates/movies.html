@@ -14,12 +14,35 @@
     <div th:insert="~{index.html :: header}"> </div>
 
     <main>
-        <div class="card-slideshow small-margin-top">
+        <div class="card-slideshow mini-margin-top">
             <div class="title-div">
                 <h1 class="title" th:if="${movies.isEmpty()}">Non ci sono Film nel sistema</h1>
                 <h1 class="title" th:unless="${movies.isEmpty()}">Tutti i Film</h1>
             </div>
-            <div class="card-container">
+
+            <div style="display: flex; justify-content: space-evenly;">
+                <form method="GET" th:action="@{/searchMoviesByYear}" style="display: flex; align-items: center; width:400px;">
+                    <h3>Filtra per anno</h3>
+                    <div class="input-content">
+                        <input type="number" placeholder="Anno del Film" class="form-input" th:name="year" style="height: 30px;">
+                    </div>
+                    <br>
+                    <input type="image" th:src="@{/svgs/search.svg}" class="form-button">
+                </form>
+
+                <form method="GET" th:action="@{/searchMoviesByGenre}" style="display: flex; align-items: center; width:400px;">
+                    <h3>Filtra per genere</h3>
+                    <div class="input-content">
+                        <select class="form-input" th:name="genreId" style="height: 30px;">
+                            <option th:each="genre: ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+                        </select>
+                    </div>
+                    <br>
+                    <input type="image" th:src="@{/svgs/search.svg}" class="form-button">
+                </form>
+            </div>
+
+            <div class="card-container small-margin-top">
                 <div class="card" th:each="movie:${movies}">
                     <div class="card-img">
                         <img th:src="@{'data:image;base64,' + ${movie.imageString}}">

@@ -13,19 +13,45 @@
 
     <div th:insert="~{index.html :: header}"> </div>
 
-    <main class="evenly-spacer margin-top">
-        <div class="box">
-            <h2 class="title" th:text="${artist.name} + ' ' + ${artist.surname}">Nome</h2>
-            <div class="box-content">
-                <div class="column">
-                    <div class="film-img">
-                        <img th:src="@{'data:image;base64,' + ${artist.imageString}}">
-                    </div>
+    <main class="column" style="margin-top: 2%;">
+
+        <div class="movie-banner">
+            <div id="artist-image" class="column" style="height:100%; width:40%;">
+                <img th:src="@{'data:image;base64,' + ${artist.imageString}}"
+                    style="height: 300px; width: 220px;margin: 10px 10px 10px 30px;">
+            </div>
+            <div id="artist-info" style="height:100%; width:60%;">
+                <div>
+                    <h2 th:text="'Nome: '+${artist.name}"></h2>
+                </div>
+                <hr>
+                <div>
+                    <h2 th:text="'Cognome: '+${artist.surname}"></h2>
+                </div>
+                <hr>
+                <div>
+                    <h2 th:text=" 'Data di nascita: ' + ${artist.birthDate}">età</h2>
+                </div>
+                <hr>
+                <div th:if="${artist.deathDate}">
+                    <h2 th:text=" 'Data di morte: ' + ${artist.deathDate}">età</h2>
                 </div>
             </div>
-            <div style="display: flex; width: 500px; justify-content: space-around;">
-                <h3 th:text=" 'Data di nascita: ' + ${artist.birthDate}">età</h3>
-                <h3 th:if="${artist.deathDate}" th:text=" 'Data di morte: ' + ${artist.deathDate}">età</h3>
+        </div>
+
+        <div class="movie-reviews-banner" style="height: fit-content;">
+            <h2>Compare In:</h2>
+            <div class="card-container margin-top">
+                <div class="card" th:each="movie:${artist.movies}">
+                    <div class="card-img">
+                        <img th:src="@{'data:image;base64,' + ${movie.imageString}}">
+                    </div>
+                    <div class="card-info">
+                        <a th:href="@{'/movies' + '/' + ${movie.id} }" class="link">
+                            <h3 th:text="${movie.title} + ' ' + '(' + ${movie.year} + ')'">Info</h3>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

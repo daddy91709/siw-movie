@@ -13,8 +13,7 @@
 
     <div th:insert="~{index.html :: header}"> </div>
 
-    <main>
-
+    <main class="column">
         <div class="title-div" th:if="${genres.isEmpty()}">
             <h1 class="title">Non ci sono Generi di Film nel sistema</h1>
         </div>
@@ -22,15 +21,11 @@
             <h1 class="title">Tutti i Generi</h1>
         </div>
 
-        <div class="card-slideshow">
-            <div class="card-container">
-                <div class="card" th:each="genre : ${genres}">
-                    <div class="card-img">
-                    </div>
-                    <div class="card-info">
-                        <h3 th:text="${genre.name}">Info</h3>
-                    </div>
-                </div>
+        <div class="small-margin-top" style="display: flex; flex-wrap: wrap; width: 70%; justify-content: space-evenly;">
+            <div class="artist-box" th:each="genre : ${genres}">
+                <a th:href="@{'/getMoviesByGenre/' + ${genre.id}}">
+                    <h3 th:text="${genre.name}">Info</h3>
+                </a>
             </div>
         </div>
     </main>

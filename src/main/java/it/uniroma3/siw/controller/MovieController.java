@@ -1,7 +1,6 @@
 package it.uniroma3.siw.controller;
 
 import java.io.IOException;
-import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,39 +13,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import ch.qos.logback.core.joran.conditional.ElseAction;
-import it.uniroma3.siw.model.Artist;
-import it.uniroma3.siw.model.Genre;
 import it.uniroma3.siw.model.Movie;
-import it.uniroma3.siw.repository.ArtistRepository;
-import it.uniroma3.siw.repository.GenreRepository;
-import it.uniroma3.siw.repository.MovieRepository;
-import it.uniroma3.siw.repository.ReviewRepository;
+import it.uniroma3.siw.service.ArtistService;
+import it.uniroma3.siw.service.GenreService;
+import it.uniroma3.siw.service.MovieService;
+import it.uniroma3.siw.service.ReviewService;
 import it.uniroma3.siw.validator.MovieValidator;
 import jakarta.validation.Valid;
 
 @Controller
 public class MovieController {
 	@Autowired
-	MovieRepository movieRepository;
+	MovieService movieService;
 	@Autowired
 	MovieValidator movieValidator;
 	@Autowired
-	ArtistRepository artistRepository;
+	ArtistService artistService;
 	@Autowired
-	ReviewRepository reviewRepository;
+	GenreService genreService;
 	@Autowired
-	GenreRepository genreRepository;
+	ReviewService reviewService;
 
 	@GetMapping("/admin/manageMovies")
 	public String managemovies(Model model) {
-		model.addAttribute("movies", this.movieRepository.findAll());
+		model.addAttribute("movies", this.movieService.getAllMovies());
+		model.addAttribute("genres", this.genreService.getAllGenres());
 		return "/admin/manageMovies.html";
 	}
 
 	@GetMapping("/admin/manageMovies/{id}")
 	public String updateMovie(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", this.movieRepository.findById(id).get());
+		model.addAttribute("movie", this.movieService.getMovieById(id));
 		return "/admin/manageMovie.html";
 	}
 
@@ -58,134 +55,113 @@ public class MovieController {
 
 	@GetMapping("/admin/addDirector/{id}")
 	public String addDirector(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", this.movieRepository.findById(id).get());
-		model.addAttribute("directors", this.artistRepository.findAll());
+		model.addAttribute("movie", this.movieService.getMovieById(id));
+		model.addAttribute("directors", this.artistService.getAllArtists());
 		return "/admin/addDirector.html";
 	}
 
 	@GetMapping("/admin/setDirector/{idMovie}/{idDirector}")
 	public String setDirector(@PathVariable("idMovie") Long idMovie, @PathVariable("idDirector") Long idDirector,
 			Model model) {
-		Movie movie = this.movieRepository.findById(idMovie).get();
-		Artist director = this.artistRepository.findById(idDirector).get();
-		movie.setDirector(director);
-		this.movieRepository.save(movie);
-		model.addAttribute("movie", movie);
+		model.addAttribute("movie", this.movieService.addDirectorTo(idMovie, idDirector));
 		return "/admin/manageMovie.html";
 	}
 
 	@GetMapping("/admin/manageActors/{id}")
 	public String manageActors(@PathVariable("id") Long id, Model model) {
-		Movie movie = this.movieRepository.findById(id).get();
-		model.addAttribute("movie", movie);
-		model.addAttribute("artists", this.artistRepository.getArtistByMoviesNotContains(movie));
+		model.addAttribute("movie", this.movieService.getMovieById(id));
+		model.addAttribute("artists", this.artistService.getArtistsNotInMovieById(id));
 		return "/admin/manageActors.html";
 	}
 
 	@GetMapping("/admin/addActor/{idArtist}/{idMovie}")
 	public String addActor(@PathVariable("idArtist") Long idArtist, @PathVariable("idMovie") Long idMovie,
 			Model model) {
-		Movie movie = this.movieRepository.findById(idMovie).get();
-		Artist artist = this.artistRepository.findById(idArtist).get();
 
-		movie.getArtists().add(artist);
-		this.movieRepository.save(movie);
-
-		artist.getMovies().add(movie);
-		this.artistRepository.save(artist);
-
-		model.addAttribute("movie", movie);
-		model.addAttribute("artists", this.artistRepository.getArtistByMoviesNotContains(movie));
+		model.addAttribute("movie", this.movieService.addActorTo(idMovie, idArtist));
+		model.addAttribute("artists", this.artistService.getArtistsNotInMovieById(idMovie));
 		return "/admin/manageActors.html";
 	}
 
 	@GetMapping("/admin/removeActor/{idArtist}/{idMovie}")
 	public String removeActor(@PathVariable("idArtist") Long idArtist, @PathVariable("idMovie") Long idMovie,
 			Model model) {
-		Movie movie = this.movieRepository.findById(idMovie).get();
-		Artist artist = this.artistRepository.findById(idArtist).get();
 
-		movie.getArtists().remove(artist);
-		this.movieRepository.save(movie);
-
-		artist.getMovies().remove(movie);
-		this.artistRepository.save(artist);
-
-		model.addAttribute("movie", movie);
-		model.addAttribute("artists", this.artistRepository.getArtistByMoviesNotContains(movie));
+		model.addAttribute("movie", this.movieService.removeActorFrom(idMovie, idArtist));
+		model.addAttribute("artists", this.artistService.getArtistsNotInMovieById(idMovie));
 		return "/admin/manageActors.html";
 	}
 
 	@PostMapping("/admin/movies")
 	public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
 			MultipartFile image, Model model) {
-		this.movieValidator.validate(movie, bindingResult);
-		if (!bindingResult.hasErrors()) {
-
-			try {
-				String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
-				movie.setImageString(base64Image);
-			} catch (IOException e) {
-			}
-
-			this.movieRepository.save(movie);
-			model.addAttribute("movie", movie);
+		try{
+			model.addAttribute("movie", movieService.createMovie(movie, bindingResult, image));
 			return "/admin/manageMovie.html";
-		} else {
+		}
+		catch(IOException e){
 			return "/admin/formNewMovie.html";
 		}
 	}
 
 	@GetMapping("/movies/{id}")
 	public String getMovie(@PathVariable("id") Long id, Model model) {
-		Movie movie = this.movieRepository.findById(id).get();
-		model.addAttribute("movie", movie);
-		model.addAttribute("rating", this.reviewRepository.findValutationAvgByMovie(movie));
+		model.addAttribute("movie", this.movieService.getMovieById(id));
+		model.addAttribute("rating", this.reviewService.getMovieRatingById(id));
 		return "movie.html";
 	}
 
 	@GetMapping("/movies")
 	public String showMovies(Model model) {
-		model.addAttribute("movies", this.movieRepository.findAll());
+		model.addAttribute("movies", this.movieService.getAllMovies());
+		model.addAttribute("genres", this.genreService.getAllGenres());
 		return "movies.html";
-	}
-
-	@GetMapping("/formSearchMovies")
-	public String formSearchMovies(Model model) {
-		model.addAttribute("genres", this.genreRepository.findAll());
-		return "formSearchMovies.html";
 	}
 
 	@GetMapping("/searchMoviesByYear")
 	public String searchMoviesByYear(Model model, @RequestParam Integer year) {
-		model.addAttribute("movies", this.movieRepository.findAllByYear(year));
+		model.addAttribute("movies", this.movieService.getMoviesByYear(year));
+		model.addAttribute("genres", this.genreService.getAllGenres());
 		return "movies.html";
+	}
+
+	@GetMapping("/manageMoviesByGenre")
+	public String manageMoviesByGenre(Model model, @RequestParam Long genreId) {
+		model.addAttribute("movies", this.movieService.getMoviesByGenre(this.genreService.getGenreById(genreId)));
+		model.addAttribute("genres", this.genreService.getAllGenres());
+		return "admin/manageMovies.html";
+	}
+
+	@GetMapping("/manageMoviesByYear")
+	public String manageMoviesByYear(Model model, @RequestParam Integer year) {
+		model.addAttribute("movies", this.movieService.getMoviesByYear(year));
+		model.addAttribute("genres", this.genreService.getAllGenres());
+		return "admin/manageMovies.html";
 	}
 
 	@GetMapping("/searchMoviesByGenre")
 	public String searchMoviesByGenre(Model model, @RequestParam Long genreId) {
-		Genre genre = this.genreRepository.findById(genreId).get();
-		model.addAttribute("movies", this.movieRepository.findAllByGenresContains(genre));
+		model.addAttribute("movies", this.movieService.getMoviesByGenre(this.genreService.getGenreById(genreId)));
+		model.addAttribute("genres", this.genreService.getAllGenres());
+		return "movies.html";
+	}
+
+	@GetMapping("/getMoviesByGenre/{id}")
+	public String getMoviesByGenre(Model model, @PathVariable("id") Long id) {
+		model.addAttribute("movies", this.movieService.getMoviesByGenre(this.genreService.getGenreById(id)));
+		model.addAttribute("genres", this.genreService.getAllGenres());
 		return "movies.html";
 	}
 
 	@GetMapping("/admin/deleteMovie/{id}")
 	public String deleteMovie(Model model, @PathVariable("id") Long id) {
-		Movie movie = this.movieRepository.findById(id).get();
-
-		for (Artist artist : movie.getArtists()) {
-			artist.getMovies().remove(movie);
-		}
-
-		this.movieRepository.delete(movie);
-
-		model.addAttribute("movies", this.movieRepository.findAll());
+		model.addAttribute("movies", this.movieService.deleteMovieByIdAndReturnAll(id));
 		return "admin/manageMovies.html";
 	}
 
 	@GetMapping("/admin/editMovie/{id}")
 	public String editMovie(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", this.movieRepository.findById(id).get());
+		model.addAttribute("movie", this.movieService.getMovieById(id));
 		return "admin/formEditMovie.html";
 	}
 
@@ -193,75 +169,38 @@ public class MovieController {
 	public String saveMovieChanges(@PathVariable("id") Long id, @Valid @ModelAttribute Movie newmovie,
 			BindingResult bindingResult, MultipartFile image, Model model) {
 
-		// valida i nuovi dati per verificare che non ci siano stringhe nulle
-		this.movieValidator.validate(newmovie, bindingResult);
-
-		// se non ci sono errori di campo salva i nuovi dati
-		if (!bindingResult.hasFieldErrors()) {
-			Movie movie = this.movieRepository.findById(id).get();
-			movie.setTitle(newmovie.getTitle());
-			movie.setYear(newmovie.getYear());
-
-			// se è cambiata anche l'immagine aggiornala
-			try {
-				if (image.getBytes().length != 0) {
-					String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
-					movie.setImageString(base64Image);
-				}
-			} catch (IOException e) {
-			}
-
-			this.movieRepository.save(movie);
-
-			model.addAttribute("movie", movie);
-			return "/admin/manageMovie.html";
+		try{
+			model.addAttribute("movie", this.movieService.editMovie(id, newmovie, bindingResult, image));
+			return "admin/manageMovie.html";
 		}
-		// se c'erano errori di campo allora riporta alla form con gli errori
-		else {
-			model.addAttribute("movie", this.movieRepository.findById(id).get());
-			return "/admin/formEditMovie.html";
+		catch (IOException e){
+			model.addAttribute("movie", this.movieService.getMovieById(id));
+			return "admin/formEditMovie.html";
 		}
 	}
 
 	@GetMapping("/admin/manageGenres/{id}")
 	public String manageGenres(@PathVariable("id") Long id, Model model) {
-		Movie movie = this.movieRepository.findById(id).get();
-		model.addAttribute("movie", movie);
-		model.addAttribute("genres", this.genreRepository.getGenreByMoviesNotContains(movie));
+		model.addAttribute("movie", this.movieService.getMovieById(id));
+		model.addAttribute("genres", this.genreService.getGenresNotInMovieById(id));
 		return "/admin/manageGenres.html";
 	}
 
 	@GetMapping("/admin/addGenre/{idGenre}/{idMovie}")
 	public String addGenre(@PathVariable("idGenre") Long idGenre, @PathVariable("idMovie") Long idMovie,
 			Model model) {
-		Movie movie = this.movieRepository.findById(idMovie).get();
-		Genre genre = this.genreRepository.findById(idGenre).get();
 
-		movie.getGenres().add(genre);
-		this.movieRepository.save(movie);
-
-		genre.getMovies().add(movie);
-		this.genreRepository.save(genre);
-
-		model.addAttribute("movie", movie);
-		model.addAttribute("genres", this.genreRepository.getGenreByMoviesNotContains(movie));
+		model.addAttribute("movie", this.movieService.addGenreTo(idMovie, idGenre));
+		model.addAttribute("genres", this.genreService.getGenresNotInMovieById(idMovie));
 		return "/admin/manageGenres.html";
 	}
 
 	@GetMapping("/admin/removeGenre/{idGenre}/{idMovie}")
 	public String removeGenre(@PathVariable("idGenre") Long idGenre, @PathVariable("idMovie") Long idMovie,
 			Model model) {
-		Movie movie = this.movieRepository.findById(idMovie).get();
-		Genre genre = this.genreRepository.findById(idGenre).get();
 
-		movie.getGenres().remove(genre);
-		this.movieRepository.save(movie);
-
-		genre.getMovies().remove(movie);
-		this.genreRepository.save(genre);
-
-		model.addAttribute("movie", movie);
-		model.addAttribute("genres", this.genreRepository.getGenreByMoviesNotContains(movie));
+		model.addAttribute("movie", this.movieService.removeGenreFrom(idMovie, idGenre));
+		model.addAttribute("genres", this.genreService.getGenresNotInMovieById(idMovie));
 		return "/admin/manageGenres.html";
 	}
 

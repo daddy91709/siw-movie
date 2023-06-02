@@ -13,7 +13,7 @@
 
     <div th:insert="~{admin/adminindex.html :: header}"> </div>
 
-    <main class="evenly-spacer margin-top">
+    <main class="evenly-spacer small-margin-top">
         <form method="POST" th:action="@{/admin/addArtist}" th:object="${artist}" class="box" enctype="multipart/form-data">
             <h2 class="title">Inserisci un Artista</h2>
             <div class="input-content">

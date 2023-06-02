@@ -14,12 +14,12 @@
     <div th:insert="~{index.html :: header}"> </div>
 
     <main>
-        <div class="card-slideshow small-margin-top">
+        <div class="card-slideshow mini-margin-top">
             <div class="title-div">
                 <h1 th:if="${artists.isEmpty()}" class="title">Non ci sono Artisti nel sistema</h1>
                 <h1 th:unless="${artists.isEmpty()}" class="title">Tutti gli Artisti</h1>
             </div>
-            <div class="card-container">
+            <div class="card-container small-margin-top">
                 <div class="card" th:each="artist : ${artists}">
                     <div class="card-img">
                         <img th:src="@{'data:image;base64,' + ${artist.imageString}}">

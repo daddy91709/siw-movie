@@ -1,5 +1,7 @@
 package it.uniroma3.siw.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,22 +19,21 @@ import it.uniroma3.siw.repository.MovieRepository;
 import it.uniroma3.siw.repository.ReviewRepository;
 import it.uniroma3.siw.repository.UserRepository;
 import it.uniroma3.siw.service.CredentialsService;
-import it.uniroma3.siw.validator.MovieValidator;
+import it.uniroma3.siw.service.MovieService;
+import it.uniroma3.siw.service.ReviewService;
 import it.uniroma3.siw.validator.ReviewValidator;
 import jakarta.validation.Valid;
 
 @Controller
 public class ReviewController {
 	@Autowired
-	MovieRepository movieRepository;
-	@Autowired
-	MovieValidator movieValidator;
+	MovieService movieService;
 	@Autowired
 	ArtistRepository artistRepository;
 	@Autowired
 	ReviewValidator reviewValidator;
 	@Autowired
-	ReviewRepository reviewRepository;
+	ReviewService reviewService;
 	@Autowired
 	CredentialsService credentialsService;
 	@Autowired
@@ -40,7 +41,7 @@ public class ReviewController {
 
 	@GetMapping("/user/reviewFilm/{id}")
 	public String formNewReview(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", this.movieRepository.findById(id).get());
+		model.addAttribute("movie", this.movieService.getMovieById(id));
 		model.addAttribute("review", new Review());
 		return "user/formNewReview.html";
 	}
@@ -48,60 +49,33 @@ public class ReviewController {
 	@PostMapping("/user/addReviewTo/{id}")
 	public String newReview(@PathVariable("id") Long id, @Valid @ModelAttribute("review") Review review,
 			BindingResult bindingResult, Model model) {
-				
-		Movie movie = this.movieRepository.findById(id).get();
-
-		//Collegamenti uscenti di review
-		review.setUser(AuthConfiguration.getCurrentUser(credentialsService));
-        review.setMovie(movie);
-
-		//Controllo se tutti i valori sono stati inseriti correttamente e che non ci sia già una recensione per quell'utente
-		this.reviewValidator.validate(review, bindingResult);
-	
-		if (!bindingResult.hasErrors()) {
-
-			//Collegamenti entranti di review
-			movie.getReviews().add(review);
-			review.getUser().getReview().add(review);
-			
-			//rendo persistenti i cambiamenti
-			this.movieRepository.save(movie);
-			this.reviewRepository.save(review);
-			this.userRepository.save(review.getUser());
-
-			model.addAttribute("movie", movie);
-
+		try{
+			model.addAttribute("movie", this.reviewService.createReviewForMovie(id, review, bindingResult));
 			return "movie.html";
-		} else {
-			model.addAttribute("movie", movie);
+		}
+		catch(IOException e) {
+			model.addAttribute("movie", this.movieService.getMovieById(id));
 			return "user/formNewReview.html";
 		}
 	}
 
 	@GetMapping("/review/{id}")
 	public String showReview(@PathVariable("id") Long id, Model model){
-		Review review = this.reviewRepository.findById(id).get();
-		model.addAttribute("review", review);
-		model.addAttribute("movie", review.getMovie());
+		model.addAttribute("review", this.reviewService.getReviewById(id));
+		model.addAttribute("movie", this.reviewService.getReviewById(id).getMovie());
 		return "review.html";
 	}
 
 	@GetMapping("admin/manageReview/{id}")
 	public String manageReview(@PathVariable("id") Long id, Model model){
-		Review review = this.reviewRepository.findById(id).get();
-		model.addAttribute("review", review);
-		model.addAttribute("movie", review.getMovie());
+		model.addAttribute("review", this.reviewService.getReviewById(id));
+		model.addAttribute("movie", this.reviewService.getReviewById(id).getMovie());
 		return "admin/manageReview.html";
 	}
 
 	@GetMapping("admin/deleteReview/{id}")
 	public String deleteReview(@PathVariable("id") Long id, Model model){
-		Review review = this.reviewRepository.findById(id).get();
-		review.getMovie().getReviews().remove(review);
-
-		model.addAttribute("movie", review.getMovie());
-
-		this.reviewRepository.delete(review);
+		model.addAttribute("movie", this.reviewService.deleteReviewByIdAndReturnMovie(id));
 		return "admin/manageMovie.html";
 	}
 	
@@ -112,34 +86,21 @@ public class ReviewController {
 	}
 
 	@GetMapping("/user/editReview/{reviewId}")
-	public String editTReview(@PathVariable("reviewId") Long reviewId, Model model) {
-		Review review = this.reviewRepository.findById(reviewId).get();
-
-		model.addAttribute("movie", review.getMovie());
-		model.addAttribute("review", review);
+	public String editReview(@PathVariable("reviewId") Long reviewId, Model model) {
+		model.addAttribute("review", this.reviewService.getReviewById(reviewId));
+		model.addAttribute("movie", this.reviewService.getReviewById(reviewId).getMovie());
 		return "user/formEditReview.html";
 	}
 
 	@PostMapping("/user/editReview/{id}")
 	public String saveReviewChanges(@PathVariable("id") Long id, @Valid @ModelAttribute Review newreview,
 			BindingResult bindingResult, Model model) {
-
-		this.reviewValidator.validate(newreview, bindingResult);
-		Review review = this.reviewRepository.findById(id).get();
-
-		if (!bindingResult.hasErrors()) {
-			
-			review.setTitle(newreview.getTitle());
-			review.setValutation(newreview.getValutation());
-			review.setContent(newreview.getContent());
-
-			this.reviewRepository.save(review);
-
-			model.addAttribute("user", review.getUser());
-
+		try {
+			model.addAttribute("user", this.reviewService.editReviewForMovie(id, newreview, bindingResult));
 			return "user/editReviews.html";
-		} else {
-			model.addAttribute("movie", review.getMovie());
+		}
+		catch(IOException e){
+			model.addAttribute("movie", this.reviewService.getReviewById(id).getMovie());
 			return "user/formEditReview.html";
 		}
 	}

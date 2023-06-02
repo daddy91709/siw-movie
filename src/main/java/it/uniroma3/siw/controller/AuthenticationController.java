@@ -1,6 +1,5 @@
 package it.uniroma3.siw.controller;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
-import it.uniroma3.siw.repository.GenreRepository;
-import it.uniroma3.siw.repository.ReviewRepository;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.service.GenreService;
 import it.uniroma3.siw.service.UserService;
 import it.uniroma3.siw.validator.UserValidator;
 import jakarta.validation.Valid;
@@ -31,13 +29,11 @@ public class AuthenticationController {
     @Autowired
     private UserValidator userValidator;
     @Autowired
-    private GenreRepository genreRepository;
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private GenreService genreService;
 
     @GetMapping("/")
     public String indexPage(Model model){
-        model.addAttribute("genres", this.genreRepository.findAll());
+        model.addAttribute("genres", this.genreService.getAllGenres());
         return "index.html";
     }
 
@@ -63,7 +59,7 @@ public class AuthenticationController {
             user.getCredentials().setUser(user);
             userService.saveUser(user);
 
-            model.addAttribute("genres", this.genreRepository.findAll());
+            model.addAttribute("genres", this.genreService.getAllGenres());
             return "index.html";
         }
         return "formNewUser.html";
@@ -72,7 +68,7 @@ public class AuthenticationController {
     @GetMapping(value = "/index")
     public String index(Model model) {
         org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("genres", this.genreRepository.findAll());
+        model.addAttribute("genres", this.genreService.getAllGenres());
         //model.addAttribute("topMovies", this.reviewRepository.findTopRatedMovies());
 
         if (authentication instanceof AnonymousAuthenticationToken) {
@@ -95,11 +91,11 @@ public class AuthenticationController {
         Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
         if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
             // carica la pagina admin
-            model.addAttribute("genres", this.genreRepository.findAll());
+            model.addAttribute("genres", this.genreService.getAllGenres());
             return "admin/adminindex.html";
         } else if (credentials.getRole().equals(Credentials.DEFAULT_ROLE)) {
             // carica la pagina utente autenticato
-            model.addAttribute("genres", this.genreRepository.findAll());
+            model.addAttribute("genres", this.genreService.getAllGenres());
             return "index.html";
         }
         return "login.html";
