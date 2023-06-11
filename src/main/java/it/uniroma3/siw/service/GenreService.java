@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import it.uniroma3.siw.model.Genre;
-import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.repository.GenreRepository;
 import it.uniroma3.siw.repository.MovieRepository;
 import it.uniroma3.siw.validator.GenreValidator;

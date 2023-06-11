@@ -1,6 +1,7 @@
 package it.uniroma3.siw.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,15 +87,12 @@ public class ReviewService {
 	
 		if (!bindingResult.hasErrors()) {
 
-            this.reviewRepository.save(review); 
-
-			//Collegamenti entranti di review
-			movie.getReviews().add(review);
+            //collegamenti entranti
+            review.getMovie().getReviews().add(review);
 			review.getUser().getReview().add(review);
 			
 			//rendo persistenti i cambiamenti
-			this.movieRepository.save(movie);
-			this.userRepository.save(review.getUser());
+			this.reviewRepository.save(review);
 
 			return movie;
 		} else {

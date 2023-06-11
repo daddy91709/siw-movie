@@ -15,8 +15,6 @@ import it.uniroma3.siw.authentication.AuthConfiguration;
 import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.model.Review;
 import it.uniroma3.siw.repository.ArtistRepository;
-import it.uniroma3.siw.repository.MovieRepository;
-import it.uniroma3.siw.repository.ReviewRepository;
 import it.uniroma3.siw.repository.UserRepository;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.MovieService;
@@ -50,7 +48,7 @@ public class ReviewController {
 	public String newReview(@PathVariable("id") Long id, @Valid @ModelAttribute("review") Review review,
 			BindingResult bindingResult, Model model) {
 		try{
-			model.addAttribute("movie", this.reviewService.createReviewForMovie(id, review, bindingResult));
+			model.addAttribute("movie",this.reviewService.createReviewForMovie(id, review, bindingResult));
 			return "movie.html";
 		}
 		catch(IOException e) {
