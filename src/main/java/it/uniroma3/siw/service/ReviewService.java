@@ -86,13 +86,14 @@ public class ReviewService {
 	
 		if (!bindingResult.hasErrors()) {
 
+            this.reviewRepository.save(review); 
+
 			//Collegamenti entranti di review
 			movie.getReviews().add(review);
 			review.getUser().getReview().add(review);
 			
 			//rendo persistenti i cambiamenti
 			this.movieRepository.save(movie);
-			this.reviewRepository.save(review);
 			this.userRepository.save(review.getUser());
 
 			return movie;

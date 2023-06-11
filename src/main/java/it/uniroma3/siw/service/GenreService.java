@@ -51,20 +51,12 @@ public class GenreService {
     public void deleteGenreById(Long id){
         Genre genre = this.genreRepository.findById(id).get();
 
-        for (Movie movie : genre.getMovies()) {
-            movie.setDirector(null);
-        }
-
         this.genreRepository.delete(genre);
     }
 
     @Transactional
     public Iterable<Genre> deleteGenreByIdAndReturnAll(Long id){
         Genre genre = this.genreRepository.findById(id).get();
-
-        for (Movie movie : genre.getMovies()) {
-            movie.setDirector(null);
-        }
 
         this.genreRepository.delete(genre);
 
