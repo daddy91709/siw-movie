@@ -33,6 +33,18 @@ public class Review {
 	@ManyToOne
 	private User user;
 
+	public Review(String title, int valutation, String content){
+		this.title = title;
+		this.valutation = valutation;
+		this.content = content;
+	}
+
+	public Review(){
+		this.title = null;
+		this.valutation = 0;
+		this.content = null;
+	}
+
     public User getUser() {
 		return user;
 	}

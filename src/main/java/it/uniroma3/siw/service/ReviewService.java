@@ -88,7 +88,7 @@ public class ReviewService {
 		if (!bindingResult.hasErrors()) {
 
             //collegamenti entranti
-            review.getMovie().getReviews().add(review);
+            movie.getReviews().add(review);
 			review.getUser().getReview().add(review);
 			
 			//rendo persistenti i cambiamenti

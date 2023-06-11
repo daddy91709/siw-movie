@@ -45,40 +45,44 @@ public class ReviewController {
 	}
 
 	@PostMapping("/user/addReviewTo/{id}")
-	public String newReview(@PathVariable("id") Long id, @Valid @ModelAttribute("review") Review review,
+	public String newReview(@PathVariable("id") Long id,
+			@Valid @ModelAttribute(value = "review") Review review,
 			BindingResult bindingResult, Model model) {
-		try{
-			model.addAttribute("movie",this.reviewService.createReviewForMovie(id, review, bindingResult));
-			return "movie.html";
-		}
-		catch(IOException e) {
-			model.addAttribute("movie", this.movieService.getMovieById(id));
-			return "user/formNewReview.html";
-		}
+
+			//creo una nuova review coi parametri appena inseriti per non avere errori causati dall'entity manager
+			Review newReview = new Review(review.getTitle(),review.getValutation(),review.getContent());
+
+			try {
+				model.addAttribute("movie", this.reviewService.createReviewForMovie(id, newReview, bindingResult));
+				return "movie.html";
+			} catch (IOException e) {
+				model.addAttribute("movie", this.movieService.getMovieById(id));
+				return "user/formNewReview.html";
+			}
 	}
 
 	@GetMapping("/review/{id}")
-	public String showReview(@PathVariable("id") Long id, Model model){
+	public String showReview(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("review", this.reviewService.getReviewById(id));
 		model.addAttribute("movie", this.reviewService.getReviewById(id).getMovie());
 		return "review.html";
 	}
 
 	@GetMapping("admin/manageReview/{id}")
-	public String manageReview(@PathVariable("id") Long id, Model model){
+	public String manageReview(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("review", this.reviewService.getReviewById(id));
 		model.addAttribute("movie", this.reviewService.getReviewById(id).getMovie());
 		return "admin/manageReview.html";
 	}
 
 	@GetMapping("admin/deleteReview/{id}")
-	public String deleteReview(@PathVariable("id") Long id, Model model){
+	public String deleteReview(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("movie", this.reviewService.deleteReviewByIdAndReturnMovie(id));
 		return "admin/manageMovie.html";
 	}
-	
+
 	@GetMapping("/user/editReviews")
-	public String editReviewsPage(Model model){
+	public String editReviewsPage(Model model) {
 		model.addAttribute("user", AuthConfiguration.getCurrentUser(credentialsService));
 		return "user/editReviews";
 	}
@@ -96,8 +100,7 @@ public class ReviewController {
 		try {
 			model.addAttribute("user", this.reviewService.editReviewForMovie(id, newreview, bindingResult));
 			return "user/editReviews.html";
-		}
-		catch(IOException e){
+		} catch (IOException e) {
 			model.addAttribute("movie", this.reviewService.getReviewById(id).getMovie());
 			return "user/formEditReview.html";
 		}
