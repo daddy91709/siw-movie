@@ -15,6 +15,9 @@ public class UserValidator implements Validator {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	CredentialsValidator credentialsValidator;
+
 	@Override
 	public void validate(Object o, Errors errors) {
 		User user = (User) o;
@@ -25,6 +28,7 @@ public class UserValidator implements Validator {
 		 // Validazione specifica per le credenziali
 		 ValidationUtils.rejectIfEmptyOrWhitespace(errors, "credentials.username", "NotBlank");
 		 ValidationUtils.rejectIfEmptyOrWhitespace(errors, "credentials.password", "NotBlank");
+		 ValidationUtils.invokeValidator(credentialsValidator, user.getCredentials(), errors);
 	}
 
 	@Override
